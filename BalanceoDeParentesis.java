@@ -15,10 +15,9 @@ public class BalanceoDeParentesis{
                 /* Inicializando objetos */
                 System.out.print("Introduzca la expresión a verificar: ");
                 expresion = entrada.next();
+                expresion = expresion.replaceAll(" ", "");
                 esPar = expresion.length()==0;
-                if(expresion.length() == 0){
-                    System.out.print("La expresión está vacía.");
-                } else if (esPar){
+                if (!esPar){
                     for (int i = 0; i < expresion.length(); i++) {
                         auxiliar = expresion.charAt(i);
                         if (auxiliar == '(' || auxiliar == '[' || auxiliar == '{') {
@@ -37,9 +36,11 @@ public class BalanceoDeParentesis{
                             }
                         }
                     }
-                    if (estaBalanceado) System.out.print("La expresión " + expresion + " está balanceada.");
-                } else {
-                    System.out.print("La expresión " + expresion + " no está balanceada.");
+                    if (estaBalanceado){ System.out.print("La expresión " + expresion + " está balanceada."); }
                 }
+                if(esPar){
+                    System.out.print("La expresión no está balanceada.");
+                }
+
             }
 }
