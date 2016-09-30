@@ -1,17 +1,18 @@
 import java.util.Scanner;
-import java.util.Stack;
+import estructuras.Stack;
+import estructuras.StackUnlimited;
 
 public class BalanceoDeParentesis{
     public static void main (String[]args){
-        //Declaración de variables
-        StackAsArray separadores;
+        /* Declaración de variables */
+        Stack separadores;
         char auxiliar, temporal;
         boolean estaBalanceado = false;
         String expresion;
-        //Creación de objetos
+        /* Creación de objetos */
         Scanner entrada = new Scanner(System.in);
-        separadores = new StackAsArray();
-        //Inicializando objetos
+        separadores = new StackUnlimited();
+        /* Inicializando objetos */
         System.out.println("Introduzca la expresión a verificar: ");
         expresion = entrada.next();
             for(int i = 0; i<expresion.length(); i++){
@@ -31,8 +32,6 @@ public class BalanceoDeParentesis{
             	}
                 }
             }
-        if(estaBalanceado == true){
-            System.out.print("La expresión "+ expresion + " está balanceada.");
-        } 
+        if(estaBalanceado){ System.out.print("La expresión " + expresion + " está balanceada.");}
     }
 }
