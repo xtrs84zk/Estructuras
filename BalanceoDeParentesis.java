@@ -1,7 +1,7 @@
-import java.util.Scanner;
 import estructuras.Stack;
 import estructuras.StackUnlimited;
 
+import java.util.Scanner;
 public class BalanceoDeParentesis{
     public static void main (String[]args){
         /* Declaración de variables */
