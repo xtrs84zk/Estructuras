@@ -17,6 +17,8 @@ public class BalanceoExpresionalX {
         System.out.print("\nIntroduzca la expresión a verificar: ");
         String expresion = entrada.next();
         expresion = expresion.replaceAll(" ", ""); //Quitando espacios en blanco
+        limpiarAgrupadores(expresion);
+
         if (estaBalanceada(expresion)) {
             System.out.println("La expresion está balanceada.");
         } else {
@@ -26,28 +28,49 @@ public class BalanceoExpresionalX {
 
     private static boolean estaBalanceada(String expresion) {
         Stack separadores;
-        char temporal, auxiliar;
+        int agrupadores[] = new int[3];
+        String temporal = "";
         if (expresion.length() == 0) return true; //Naturalmente, no se puede evaluar una expresión vacía
         separadores = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear la pila
         if (expresion.length() % 2 != 0)
             return false; //Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
         //La pila no está vacía y tiene una cantidad par de carácteres, se procede a evaluar rigurosamente.
+        for (int i = 0; i < agrupadores.length; i++) { //Inicializando cantidad de agrupadores en cero.
+            agrupadores[i] = 0;
+        }
+        //Agrupadores[0] servirá para almacenar los (); agrupadores[1] servirá para almacenar los {}; agrupadores[2] servirá para almacenar los [];
         for (int i = 0; i < expresion.length(); i++) {
-            auxiliar = expresion.charAt(i);
-            if (auxiliar == '(' || auxiliar == '[' || auxiliar == '{') { //Si el caracter es de apertura, se agrega a la pila.
-                separadores.push(expresion.charAt(i));
-            }
-            try {
-                temporal = (Character) separadores.pop(); //Los caracteres de apertura son sacados de la pila.
-                if ((expresion.charAt(i) == ')' && temporal != '(') || (temporal == '{' && expresion.charAt(i) != '}') || (temporal == '[' && expresion.charAt(i) != ']')) {
-                    return false;
-                }
-            } catch (Exception e) {
-                return true;
+            switch (expresion.charAt(i)) {
+                case '(':
+                    agrupadores[0]++;
+                case ')':
+                    agrupadores[0]--;
+                case '{':
+                    agrupadores[1]++;
+                case '}':
+                    agrupadores[1]--;
+                case '[':
+                    agrupadores[2]++;
+                case ']':
+                    agrupadores[2]--;
             }
         }
+        if (agrupadores[1] == 0 && agrupadores[0] == 0 && agrupadores[2] == 0) {
+            return true;
+        } else {
+            return false;
+        }
 
-        return true;
     }
 
+    private static String limpiarAgrupadores(String expresion) {
+        String temporal = "";
+        for (int i = 0; i < expresion.length(); i++) {
+            if (expresion.charAt(i) == '(' || expresion.charAt(i) == '{' || expresion.charAt(i) == '[' || expresion.charAt(i) == ']' || expresion.charAt(i) == '}' || expresion.charAt(i) == ')') {
+                temporal += expresion.charAt(i);
+            }
+        }
+        return temporal;
+
+    }
 }
