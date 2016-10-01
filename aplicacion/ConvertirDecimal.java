@@ -27,7 +27,7 @@ public class ConvertirDecimal {
             System.out.print("¿Qué número deseas convertir? ");
             cociente = entrada.nextInt();
         } while (cociente < 1);
-        cadena = "El número " + cociente + " "; //Agregando texto a la cadena.
+        cadena = "El número " + cociente + " "; //Incializando el texto en la cadena.
         do { //Pedir y verificar la base a la que se transformará. Debe ser un número entre 2 y 16.
             System.out.print("¿A qué base? ");
             base = entrada.nextInt();
