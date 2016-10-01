@@ -8,7 +8,7 @@ import java.util.Scanner;
 /**
  * Aplicación que trabaja con la pila para verificar si una expresión
  * conformada por separadores está correctamente balanceada.
- * Created by xtrs84zk on 01/10/2016.
+ * Created by xtrs84zk on 29/09/2016.
  */
 
 public class BalanceoDeExpresiones {
