@@ -1,5 +1,4 @@
 package aplicacion;
-
 import estructuras.Stack;
 import estructuras.StackUnlimited;
 
@@ -8,15 +7,15 @@ import java.util.Scanner;
 /**
  * Aplicación que convierte cualquier número entero positivo decimal a la base elegida por el usuario entre binario y hexadecimal.
  *
- * @author (Javier Sánchez)
- * @version (27/09/2016)
+ *  Created by xtrs84zk on 29/09/2016.
  */
 public class ConvertirDecimal {
     public static void main(String[] args) {
         //Declarando variables
         Stack convertido; //Pila donde se almacenarán los residuos
-        String temporalString, cadena;
-        int residuo, cociente, base, temporal, número;
+        String cadena;
+        int cociente, base;
+        final String[] unidades = {"0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"};
         //Creando objetos
         convertido = new StackUnlimited(); //Debe tener espacio "ilimitado"
         Scanner entrada = new Scanner(System.in);
@@ -38,32 +37,8 @@ public class ConvertirDecimal {
             convertido.push(cociente % base);
             cociente /= base;
         } while (cociente > 0);
-        while (!convertido.isEmpty()) { //Verificar el contenido de la pila.
-            temporal = (Integer) convertido.pop();
-            temporalString = temporal + "";
-            if (temporal >= 10) { //Si el número es mayor o igual a diez, se le asignará una letra.
-                switch (temporal) { //Asignándole una letra a los valores superiores a 10.
-                    case 10:
-                        temporalString = "A";
-                        break;
-                    case 11:
-                        temporalString = "B";
-                        break;
-                    case 12:
-                        temporalString = "C";
-                        break;
-                    case 14:
-                        temporalString = "D";
-                        break;
-                    case 15:
-                        temporalString = "E";
-                        break;
-                    case 16:
-                        temporalString = "F";
-                        break;
-                }
-            }
-            cadena += temporalString;
+        while (!convertido.isEmpty()) { //Formar la cadena mientras haya elementos en la pila.
+            cadena += unidades[(Integer) convertido.pop()];
         }
         System.out.println(cadena);//Imprimiendo la cadena.
     }
