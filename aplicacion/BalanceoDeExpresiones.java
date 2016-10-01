@@ -12,8 +12,7 @@ import java.util.Scanner;
  */
 
 public class BalanceoDeExpresiones {
-    public static void main(String[] args) {
-        //Declaración de variables
+    public static void main(String[] args) { //Declaración de variables
         Stack separadores;
         char auxiliar, temporal;
         boolean estaBalanceado = true;
