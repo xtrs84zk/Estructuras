@@ -29,7 +29,6 @@ public class BalanceoExpresionalX {
     private static boolean estaBalanceada(String expresion) {
         Stack separadores;
         int agrupadores[] = new int[3];
-        String temporal = "";
         if (expresion.length() == 0) return true; //Naturalmente, no se puede evaluar una expresión vacía
         separadores = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear la pila
         if (expresion.length() % 2 != 0)
