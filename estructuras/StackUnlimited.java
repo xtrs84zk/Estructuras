@@ -2,11 +2,11 @@ package estructuras;
 /**
  * Clase que crea pilas virtualmente sin limite.
  * 
- * @author (Javier Sánchez) 
- * @version (21/09/2016)
+ * author (Javier Sánchez)
+ * version (21-09-2016)
  */
 public class StackUnlimited implements Stack{
-    Object[] stack; //pila 
+    private Object[] stack; //pila
     /**
      * Constructor for objects of class StackUnlimited
      */
