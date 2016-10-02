@@ -36,23 +36,17 @@ public class BalanceoExpresionalX {
         do {
             for (int i = 0; i < expresion.length(); i++) {
                 switch (expresion.charAt(i)) {
-                    case '(':
-                        agrupadores[0]++;
-                    case ')':
-                        agrupadores[0]--;
-                    case '{':
-                        agrupadores[1]++;
-                    case '}':
-                        agrupadores[1]--;
-                    case '[':
-                        agrupadores[2]++;
-                    case ']':
-                        agrupadores[2]--;
+                    case '(': agrupadores[0]++;
+                    case ')': agrupadores[0]--;
+                    case '{': agrupadores[1]++;
+                    case '}': agrupadores[1]--;
+                    case '[': agrupadores[2]++;
+                    case ']': agrupadores[2]--;
                 }
-                //if(agrupadores.contains(-1)) return false;
             }
         } while (agrupadores[0] >= 0 && agrupadores[1] >= 0 && agrupadores[2] >= 0);
-        return true; //Si el do finalizó sin p2, la expresión "está balanceada"
+        //if(agrupadores[0]==0 && agrupadores[1]==0 && agrupadores[2]==0){return true;} else{ return false;} //Si el do finalizó sin p2, la expresión "está balanceada"
+        return true;
     }
 
     /**
