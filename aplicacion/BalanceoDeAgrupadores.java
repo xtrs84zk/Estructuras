@@ -32,37 +32,37 @@ public class BalanceoDeAgrupadores {
      **/
     private static boolean estaBalanceada(String expresion) {
         Stack parentesis, llaves, corchetes;
-        int aux1 = 0, aux2 = 0, aux3 = 0, agrupadores[] = new int[3];
+        int agrupadores[] = new int[3];
         if (expresion.length() == 0) return true; //Naturalmente, no se puede evaluar una expresión vacía
         parentesis = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear las pilas
         llaves = new StackUnlimited();
         corchetes = new StackUnlimited();
-        //if (expresion.length() % 2 != 0)
-            //return false; //Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
+        if (expresion.length() % 2 != 0)
+            return false; //Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
         //La pila no está vacía y tiene una cantidad par de carácteres, se procede a evaluar rigurosamente.
         for (int i = 0; i < agrupadores.length; i++) { //Inicializando cantidad de agrupadores en cero.
             agrupadores[i] = 0;
         }
-        //Agrupadores[0] servirá para almacenar los (); agrupadores[1] servirá para almacenar los {}; agrupadores[2] servirá para almacenar los [];
-        do {
+        try{
             for (int i = 0; i < expresion.length(); i++) {
                 switch (expresion.charAt(i)) {
                     //Parentesis
-                    case '(': parentesis.push(1); aux1+=1;
-                    case ')': if(parentesis.isEmpty()){ aux1 = -1; } else { parentesis.pop(); aux1--;}
-                    //Llaves
-                    case '{': llaves.push(1); aux2+=1;
-                    case '}': if (llaves.isEmpty()) { aux2 = -1; } else { llaves.pop(); aux2--; }
-                    //Corchetes
-                    case '[': corchetes.push(1); aux3+=1;
-                    case ']': if (corchetes.isEmpty()) { aux3 = -1; } else { corchetes.pop(); aux3--;}
+                    case '(': parentesis.push(1);
+                    case ')': parentesis.pop();
+                        //Llaves
+                    case '{': llaves.push(1);
+                    case '}': llaves.pop();
+                        //Corchetes
+                    case '[': corchetes.push(1);
+                    case ']': corchetes.pop();
+
                 }
-                System.out.println(aux1 + " " + aux2 + " " +  aux3);
             }
-        } while ( aux1>=0 && aux2>=0 && aux3>=0);
-        //return aux1 == 0 && aux2 == 0;
-        return true;
-    }//Si el do finalizó sin p2, la expresión "está balanceada"
+        } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.
+            return false;
+        }
+        return true; //Si el proceso terminó como debería; la expresión está balanceada.
+    }
 
 
     /**
