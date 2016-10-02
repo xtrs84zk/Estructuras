@@ -17,7 +17,7 @@ public class BalanceoExpresionalX {
         System.out.print("\nIntroduzca la expresión a verificar: ");
         String expresion = entrada.next();
         expresion = expresion.replaceAll(" ", ""); //Quitando espacios en blanco
-        limpiarAgrupadores(expresion);
+        expresion = liberaAgrupadores(expresion);
 
         if (estaBalanceada(expresion)) {
             System.out.println("La expresion está balanceada.");
@@ -39,22 +39,24 @@ public class BalanceoExpresionalX {
             agrupadores[i] = 0;
         }
         //Agrupadores[0] servirá para almacenar los (); agrupadores[1] servirá para almacenar los {}; agrupadores[2] servirá para almacenar los [];
-        for (int i = 0; i < expresion.length(); i++) {
-            switch (expresion.charAt(i)) {
-                case '(':
-                    agrupadores[0]++;
-                case ')':
-                    agrupadores[0]--;
-                case '{':
-                    agrupadores[1]++;
-                case '}':
-                    agrupadores[1]--;
-                case '[':
-                    agrupadores[2]++;
-                case ']':
-                    agrupadores[2]--;
+        do {
+            for (int i = 0; i < expresion.length(); i++) {
+                switch (expresion.charAt(i)) {
+                    case '(':
+                        agrupadores[0]++;
+                    case ')':
+                        agrupadores[0]--;
+                    case '{':
+                        agrupadores[1]++;
+                    case '}':
+                        agrupadores[1]--;
+                    case '[':
+                        agrupadores[2]++;
+                    case ']':
+                        agrupadores[2]--;
+                }
             }
-        }
+        } while (agrupadores[0] >= 0 && agrupadores[1] >= 0 && agrupadores[2] >= 0);
         if (agrupadores[1] == 0 && agrupadores[0] == 0 && agrupadores[2] == 0) {
             return true;
         } else {
@@ -63,14 +65,17 @@ public class BalanceoExpresionalX {
 
     }
 
-    private static String limpiarAgrupadores(String expresion) {
+    /**
+     * Método que libera los agrupadores eliminando el resto de los carácteres.
+     **/
+    private static String liberaAgrupadores(String expresion) {
         String temporal = "";
         for (int i = 0; i < expresion.length(); i++) {
             if (expresion.charAt(i) == '(' || expresion.charAt(i) == '{' || expresion.charAt(i) == '[' || expresion.charAt(i) == ']' || expresion.charAt(i) == '}' || expresion.charAt(i) == ')') {
                 temporal += expresion.charAt(i);
             }
+
         }
         return temporal;
-
     }
 }
