@@ -68,6 +68,7 @@ public class BalanceoExpresionalX {
         for (int i = 0; i < expresion.length(); i++) {
             if (expresion.charAt(i) == '(' || expresion.charAt(i) == '{' || expresion.charAt(i) == '[' || expresion.charAt(i) == ']' || expresion.charAt(i) == '}' || expresion.charAt(i) == ')') {
                 temporal += expresion.charAt(i);
+                System.out.println(temporal);
             }
 
         }
