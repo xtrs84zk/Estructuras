@@ -9,7 +9,7 @@ import java.util.Scanner;
  * Aplicación secundaria de emergencia que trabaja con la pila para evualar expresiones.
  * Created by xtrs84zk on 01/10/2016.
  */
-//Jiuston, tenemos un pinche pedo; no usé la pila D:
+//:v
 public class BalanceoExpresionalX {
     public static void main(String[] args) { //Declaración de variable.
         //Creación de objetos
@@ -69,7 +69,6 @@ public class BalanceoExpresionalX {
         for (int i = 0; i < expresion.length(); i++) {
             if (expresion.charAt(i) == '(' || expresion.charAt(i) == '{' || expresion.charAt(i) == '[' || expresion.charAt(i) == ']' || expresion.charAt(i) == '}' || expresion.charAt(i) == ')') {
                 temporal += expresion.charAt(i);
-                System.out.println(temporal);
             }
 
         }
