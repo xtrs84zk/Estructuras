@@ -1,8 +1,4 @@
 package aplicacion;
-
-import estructuras.Stack;
-import estructuras.StackUnlimited;
-
 import java.util.Scanner;
 
 /**
@@ -28,10 +24,8 @@ public class BalanceoExpresionalX {
     }
 
     private static boolean estaBalanceada(String expresion) {
-        Stack separadores;
         int agrupadores[] = new int[3];
         if (expresion.length() == 0) return true; //Naturalmente, no se puede evaluar una expresión vacía
-        separadores = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear la pila
         if (expresion.length() % 2 != 0)
             return false; //Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
         //La pila no está vacía y tiene una cantidad par de carácteres, se procede a evaluar rigurosamente.
