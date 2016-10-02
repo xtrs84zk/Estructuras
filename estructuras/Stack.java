@@ -6,7 +6,6 @@ package estructuras;
  */
 
 public interface Stack{
-    /*static final*/ int x = 7;
     /**
      * Inserta un elemento a la pila.
      */
@@ -15,12 +14,12 @@ public interface Stack{
     /**
      *
      */
-    Object pop ();
+    Object pop () throws Exception;
 
     /**
      * Regresa el último elemento insertado a la pila, sin eliminarlo.
      * */
-    Object top();
+    Object top() throws Exception;
     
     /**
      * Indica si la pila está vacía.

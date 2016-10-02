@@ -55,7 +55,6 @@ public class BalanceoDeAgrupadores {
                         //Corchetes
                     case '[': corchetes.push(1);
                     case ']': corchetes.pop();
-
                 }
             }
         } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.

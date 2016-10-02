@@ -43,7 +43,7 @@ public class StackLimited implements Stack{
      * @return stack
      * 
      */
-    public  Object pop() {
+    public  Object pop() throws Exception{
         if (top > 0) {
             top--;
         }
@@ -63,7 +63,7 @@ public class StackLimited implements Stack{
      *
      * @return stack[top - 1] que es el elemento.
      */
-    public  Object top() {
+    public  Object top() throws Exception {
         return stack[top - 1];
     }
 

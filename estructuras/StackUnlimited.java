@@ -32,7 +32,7 @@ public class StackUnlimited implements Stack{
      * Método que "popea" (extrae y elimina) el valor al tope de la pila
      * @return elemento al tope de la pila
      */
-    public Object pop (){
+    public Object pop () throws Exception{
         Object auxiliarObject, auxiliarArray[];
         auxiliarObject = stack[stack.length-1];
         auxiliarArray = new Object[stack.length-1];
@@ -47,7 +47,7 @@ public class StackUnlimited implements Stack{
      * Método que regresa el elemento al tope de la pila sin eliminarlo
      * @return elemento al tope
      */
-    public Object top(){
+    public Object top() throws Exception{
         return stack[stack.length-1];
     }
     
