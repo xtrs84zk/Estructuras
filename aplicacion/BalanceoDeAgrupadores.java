@@ -11,25 +11,28 @@ import java.util.Scanner;
  */
 //:v
 public class BalanceoDeAgrupadores {
-    public static void main(String[] args) { //Declaración de variable.
-        //Creación de objetos
-        Scanner entrada = new Scanner(System.in);
-        //Inicializando objetos
-        System.out.print("\nIntroduzca la expresión a verificar: ");
-        String expresion = entrada.next();
+    public static void main(String[] args) {
+        String expresion; //Declaración de variables
+        Scanner entrada = new Scanner(System.in); //Inicializando objeto Scanner
+        System.out.print("\nIntroduzca la expresón a verificar: "); // Pidiendo la expresión
+        expresion = entrada.next(); //Asignando el valor de expresión.
         expresion = expresion.replaceAll(" ", ""); //Quitando espacios en blanco
-        expresion = liberaAgrupadores(expresion);
-
-        if (estaBalanceada(expresion)) {
+        expresion = liberaAgrupadores(expresion); //Quitando carácteres que no sean agrupadores
+        if (estaBalanceada(expresion)) { //Llamada al método que evalúa la expresión y mostrando resultados
             System.out.println("La expresion está balanceada.");
         } else {
             System.out.print("La expresión no está balanceada");
         }
     }
 
+    /**
+     * Método que evalúa la expresión y regresa un boolean.
+     * Recibe un String que contiene la expresión a evaluar
+     * Regresa un boolean cierto o falso dependiendo del balanceo.
+     **/
     private static boolean estaBalanceada(String expresion) {
         Stack parentesis, llaves, corchetes;
-        int auxiliar, agrupadores[] = new int[3];
+        int auxiliar = 0, agrupadores[] = new int[3];
         if (expresion.length() == 0) return true; //Naturalmente, no se puede evaluar una expresión vacía
         parentesis = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear la pila
         llaves = new StackUnlimited();
@@ -50,7 +53,7 @@ public class BalanceoDeAgrupadores {
                         if (parentesis.isEmpty()) {
                             return false;
                         } else {
-                            auxiliar = (Integer) parentesis.pop();
+                            auxiliar += (Integer) parentesis.pop();
                         }
                     case '{':
                         llaves.push(1);
@@ -58,7 +61,7 @@ public class BalanceoDeAgrupadores {
                         if (llaves.isEmpty()) {
                             return false;
                         } else {
-                            auxiliar = (Integer) llaves.pop();
+                            auxiliar += (Integer) llaves.pop();
                         }
                     case '[':
                         corchetes.push(1);
@@ -66,12 +69,13 @@ public class BalanceoDeAgrupadores {
                         if (corchetes.isEmpty()) {
                             return false;
                         } else {
-                            auxiliar = (Integer) corchetes.pop();
+                            auxiliar += (Integer) corchetes.pop();
                         }
                 }
 
             }
         } while (!parentesis.isEmpty() && !llaves.isEmpty() && !corchetes.isEmpty());
+        System.out.println(auxiliar + "");
         return true; //Si el do finalizó sin p2, la expresión "está balanceada"
     }
 
