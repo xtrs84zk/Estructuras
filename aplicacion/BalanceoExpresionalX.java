@@ -54,14 +54,10 @@ public class BalanceoExpresionalX {
                     case ']':
                         agrupadores[2]--;
                 }
+                //if(agrupadores.contains(-1)) return false;
             }
         } while (agrupadores[0] >= 0 && agrupadores[1] >= 0 && agrupadores[2] >= 0);
-        if (agrupadores[1] == 0 && agrupadores[0] == 0 && agrupadores[2] == 0) {
-            return true;
-        } else {
-            return false;
-        }
-
+        return true; //Si el do finalizó sin p2, la expresión "está balanceada"
     }
 
     /**
