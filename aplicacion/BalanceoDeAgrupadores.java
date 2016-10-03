@@ -48,19 +48,16 @@ public class BalanceoDeAgrupadores {
                     llaves.pop();
                 }
                 if(expresion.charAt(i) == '['){
-                    parentesis.push(expresion.charAt(i));
+                    corchetes.push(expresion.charAt(i));
                 }else
                 if(expresion.charAt(i) == ']'){
-                    parentesis.pop();
+                    corchetes.pop();
                 }
             }
         } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.
             r   = false;
         }
         //return true; //Si el proceso terminó como debería; la expresión está balanceada.
-        /**if(parentesis.isEmpty()  && llaves.isEmpty() && corchetes.isEmpty()){
-            r = true;
-        }**/
         return r;
     }
 
