@@ -16,7 +16,7 @@ public class BalanceoDeAgrupadores {
         expresion = entrada.next(); //Asignando el valor de expresión.
         auxiliar = expresion; //Salvando la expresión sin modificar.
         if (estaBalanceada(expresion)) { //Llamada al método que evalúa la expresión.
-            System.out.println("La expresion \"" + auxiliar + "\" está balanceada.");
+            System.out.println("La expresión \"" + auxiliar + "\" está balanceada.");
         } else {
             System.out.print("La expresión \"" + auxiliar + "\" no está balanceada");
         }

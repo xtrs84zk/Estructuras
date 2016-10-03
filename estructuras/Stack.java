@@ -8,6 +8,7 @@ package estructuras;
 public interface Stack{
     /**
      * Inserta un elemento a la pila.
+     *
      */
     void push (Object elemento);
 
