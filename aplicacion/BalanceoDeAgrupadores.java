@@ -32,7 +32,7 @@ public class BalanceoDeAgrupadores {
         parentesis = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear las pilas
         llaves = new StackUnlimited();
         corchetes = new StackUnlimited();
-        boolean r = true;
+        boolean r = false;
         try{
             for (int i = 0; i < expresion.length(); i++) {
                 if(expresion.charAt(i) == '('){
@@ -58,6 +58,9 @@ public class BalanceoDeAgrupadores {
             r   = false;
         }
         //return true; //Si el proceso terminó como debería; la expresión está balanceada.
+        if(parentesis.isEmpty()  && llaves.isEmpty() && corchetes.isEmpty()){
+            r = true;
+        }
         return r;
     }
 
