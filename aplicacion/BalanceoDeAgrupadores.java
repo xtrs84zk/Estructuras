@@ -6,19 +6,20 @@ import estructuras.StackUnlimited;
 import java.util.Scanner;
 /**
  * Aplicación que trabaja con pilas para evaluar expresiones dadas por el usuario y determinar si estas están balanceadas.
- * Created on 01/10/2016.
+ * Created on 29/09/2016.
  */
 //:v
 public class BalanceoDeAgrupadores {
     public static void main(String[] args) {
-        String expresion; //Declaración de variables
+        String expresion, auxiliar; //Declaración de variables
         Scanner entrada = new Scanner(System.in); //Inicializando objeto Scanner
         System.out.print("\nIntroduzca la expresón a verificar: "); // Pidiendo la expresión
         expresion = entrada.next(); //Asignando el valor de expresión.
+        auxiliar = expresion;
         if (estaBalanceada(expresion)) { //Llamada al método que evalúa la expresión.
-            System.out.println("La expresion está balanceada.");
+            System.out.println("La expresion \"" + auxiliar + "\" está balanceada.");
         } else {
-            System.out.print("La expresión no está balanceada");
+            System.out.print("La expresión \"" + auxiliar + "\" no está balanceada");
         }
     }
 
@@ -36,7 +37,7 @@ public class BalanceoDeAgrupadores {
         parentesis = new StackUnlimited(); //Procedemos a crear las pilas
         llaves = new StackUnlimited();
         corchetes = new StackUnlimited();
-        boolean r = false; //La expresión no está balanceada hasta que se demuestre lo contrario
+        boolean bandera = false; //La expresión no está balanceada hasta que se demuestre lo contrario
         try{ //Se intenta insertar y extraer de la pila.
             for (int i = 0; i < expresion.length(); i++) {
                 if(expresion.charAt(i) == '('){
@@ -59,13 +60,13 @@ public class BalanceoDeAgrupadores {
                 }
             }
         } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.
-            r   = false;
+            bandera   = false;
         }
         //return true; //Si el proceso terminó como debería; la expresión está balanceada.
         if(parentesis.isEmpty()  && llaves.isEmpty() && corchetes.isEmpty()){
-            r = true;
+            bandera = true;
         }
-        return r; //regresando el resultado
+        return bandera; //regresando el resultado
     }
 
 
@@ -73,7 +74,7 @@ public class BalanceoDeAgrupadores {
     private static void liberaAgrupadores(String expresion) {
         expresion = expresion.replaceAll(" ", ""); //Quitando espacios en blanco
         String temporal = "";
-        for (int i = 0; i < expresion.length(); i++) {
+        for (int i = 0; i < expresion.length(); i++) { //Almacenando únicamente los agrupadores
             if (expresion.charAt(i) == '(' || expresion.charAt(i) == '{' || expresion.charAt(i) == '[' || expresion.charAt(i) == ']' || expresion.charAt(i) == '}' || expresion.charAt(i) == ')') {
                 temporal += expresion.charAt(i);
             }
