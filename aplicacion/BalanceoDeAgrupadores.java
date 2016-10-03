@@ -56,7 +56,7 @@ public class BalanceoDeAgrupadores {
                 }
             }
         } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.
-            bandera   = false;
+            return false;
         }
         //Ahora que el proceso ha terminado, sólo queda verificar que las pilas estén vacías.
         if(parentesis.isEmpty()  && llaves.isEmpty() && corchetes.isEmpty()){
