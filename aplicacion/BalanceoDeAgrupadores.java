@@ -5,10 +5,9 @@ import estructuras.StackUnlimited;
 
 import java.util.Scanner;
 /**
- * Aplicación que trabaja con pilas para evaluar expresiones dadas por el usuario y determinar si estas están balanceadas.
+ * Aplicación que trabaja con pilas para evaluar expresiones dadas por el usuario y determinar si éstas están balanceadas.
  * Created on 29/09/2016.
  */
-//:v
 public class BalanceoDeAgrupadores {
     public static void main(String[] args) {
         String expresion, auxiliar; //Declaración de variables.
