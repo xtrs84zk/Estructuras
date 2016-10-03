@@ -31,33 +31,44 @@ public class BalanceoDeAgrupadores {
      **/
     private static boolean estaBalanceada(String expresion) {
         Stack parentesis, llaves, corchetes;
-        if (expresion.length() == 0) return true; //Naturalmente, no se puede evaluar una expresión vacía
-        if (expresion.length() % 2 != 0) {return false; }//Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
+        if (expresion.length() == 0) return false; //Naturalmente, no se puede evaluar una expresión vacía
+        if (expresion.length() % 2 != 0) {
+            return false;
+        }//Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
         //La pila no está vacía y tiene una cantidad par de carácteres, se procede a evaluar rigurosamente.
         parentesis = new StackUnlimited(); //Suponiendo que no esté vacía, procedemos a crear las pilas
         llaves = new StackUnlimited();
         corchetes = new StackUnlimited();
-        boolean r;
-        try{
+        boolean r = true;
+        try {
             for (int i = 0; i < expresion.length(); i++) {
                 switch (expresion.charAt(i)) {
                     //Parentesis
-                    case '(': parentesis.push(expresion.charAt(i));
-                    case ')': parentesis.pop();
+                    case '(':
+                        parentesis.push(expresion.charAt(i));
+                    case ')':
+                        parentesis.pop();
                         //Llaves
-                    case '{': llaves.push(expresion.charAt(i));
-                    case '}': llaves.pop();
+                    case '{':
+                        llaves.push(expresion.charAt(i));
+                    case '}':
+                        llaves.pop();
                         //Corchetes
-                    case '[': corchetes.push(expresion.charAt(i));
-                    case ']': corchetes.pop();
+                    case '[':
+                        corchetes.push(expresion.charAt(i));
+                    case ']':
+                        corchetes.pop();
                 }
             }
-        } catch(Exception e) { //En caso de haber una excepción, la expresión no está balanceada.
-            return false;
-        } finally {
-        r = (parentesis.isEmpty() && llaves.isEmpty() && corchetes.isEmpty());
-    } return r; }
-
+        } catch (ArrayIndexOutOfBoundsException e) { //En caso de haber una excepción, la expresión no está balanceada.
+            r =  false;
+        } catch(Exception e) {
+            System.out.println(e);
+        }finally{
+            System.out.print(r);
+        }
+        return r;
+    }
 
     /**
      * Método que libera los agrupadores eliminando el resto de los carácteres.
