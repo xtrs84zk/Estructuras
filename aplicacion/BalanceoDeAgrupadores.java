@@ -28,38 +28,43 @@ public class BalanceoDeAgrupadores {
      * Regresa un boolean cierto o falso dependiendo del balanceo.
      **/
     private static boolean estaBalanceada(String expresion) {
-        Stack parentesis, llaves, corchetes;
+        Stack agrupadores;
         liberaAgrupadores(expresion); //Quitando carácteres que no sean agrupadores.
         if (expresion.length() == 0) { return false; }//Naturalmente, no se puede evaluar una expresión vacía.
         if (expresion.length() % 2 != 0) {return false; }//Si la expresión tiene una cantidad impar de carácteres, podemos obviar que no está balanceada.
+        if(expresion.charAt(0) == '}' || expresion.charAt(0) == ']' || expresion.charAt(0) == ')') { return false; }
         //La pila no está vacía y tiene una cantidad par de carácteres, se procede a evaluar rigurosamente.
-        parentesis = new StackUnlimited(); //Procedemos a crear las pilas, una para cada agrupador.
-        llaves = new StackUnlimited();
-        corchetes = new StackUnlimited();
+         agrupadores = new StackUnlimited(); //Procedemos a crear las pilas, una para cada agrupador.
         boolean bandera = false; //La expresión no está balanceada hasta que se demuestre lo contrario.
         try{ //Se intenta insertar y extraer de la pila.
             for (int i = 0; i < expresion.length(); i++) {
                 if(expresion.charAt(i) == '('){ //Parentesis
-                    parentesis.push(expresion.charAt(i));
-                }else if(expresion.charAt(i) == ')'){
-                    parentesis.pop();
+                    agrupadores.push(expresion.charAt(i));
+                }else if(expresion.charAt(i) == ')' && (Character) agrupadores.top()== '('){ //Y el top es lo que corresponde
+                    agrupadores.pop();
+                } else if (expresion.charAt(i) == ')' && (Character) agrupadores.top()!= '(') {
+                    return false;
                 }
                 if(expresion.charAt(i) == '{'){ //Llaves
-                    llaves.push(expresion.charAt(i));
-                }else if(expresion.charAt(i) == '}'){
-                    llaves.pop();
+                    agrupadores.push(expresion.charAt(i));
+                }else if(expresion.charAt(i) == '}' && (Character) agrupadores.top()== '{'){ //Y el top es lo que corresponde
+                    agrupadores.pop();
+                } else if (expresion.charAt(i) == '}' && (Character) agrupadores.top()!= '{') {
+                    return false;
                 }
                 if(expresion.charAt(i) == '['){//Corchetes
-                    corchetes.push(expresion.charAt(i));
-                }else if(expresion.charAt(i) == ']'){
-                    corchetes.pop();
+                    agrupadores.push(expresion.charAt(i));
+                }else if(expresion.charAt(i) == ']' && (Character) agrupadores.top()== '['){ //Y el top es lo que corresponde
+                    agrupadores.pop();
+                } else if (expresion.charAt(i) == ']' && (Character) agrupadores.top()!= '[') {
+                    return false;
                 }
             }
         } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.
-            bandera   = false;
+            return false;
         }
         //Ahora que el proceso ha terminado, sólo queda verificar que las pilas estén vacías.
-        if(parentesis.isEmpty()  && llaves.isEmpty() && corchetes.isEmpty()){
+        if(agrupadores.isEmpty()){
             bandera = true;
         }
         return bandera; //Regresando el resultado.
