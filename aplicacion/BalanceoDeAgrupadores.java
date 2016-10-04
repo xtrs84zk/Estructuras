@@ -13,7 +13,7 @@ public class BalanceoDeAgrupadores {
         String expresion, auxiliar; //Declaración de variables.
         Scanner entrada = new Scanner(System.in); //Inicializando objeto Scanner.
         System.out.print("\nIntroduzca la expresón a verificar: "); // Pidiendo la expresión.
-        expresion = entrada.next(); //Asignando el valor de expresión.
+        expresion = entrada.nextLine(); //Asignando el valor de expresión.
         auxiliar = expresion; //Salvando la expresión sin modificar.
         if (estaBalanceada(expresion)) { //Llamada al método que evalúa la expresión.
             System.out.println("La expresión \"" + auxiliar + "\" está balanceada.");
