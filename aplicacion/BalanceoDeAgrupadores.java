@@ -38,26 +38,26 @@ public class BalanceoDeAgrupadores {
         boolean bandera = false; //La expresión no está balanceada hasta que se demuestre lo contrario.
         try{ //Se intenta insertar y extraer de la pila.
             for (int i = 0; i < expresion.length(); i++) {
-                if(expresion.charAt(i) == '('){ //Parentesis
-                    agrupadores.push(expresion.charAt(i));
-                }else if(expresion.charAt(i) == ')' && (Character) agrupadores.top()== '('){ //Y el top es lo que corresponde
-                    agrupadores.pop();
-                } else if (expresion.charAt(i) == ')' && (Character) agrupadores.top()!= '(') {
-                    return false;
+                if(expresion.charAt(i) == '('){ //Si entra un paréntesis que abre
+                    agrupadores.push(expresion.charAt(i)); //Se hace push a la pila con ese valor.
+                }else if(expresion.charAt(i) == ')' && (Character) agrupadores.top()== '('){ //Si entra un paréntesis que cierra y lo último que abrió era un paréntesis
+                    agrupadores.pop(); //Se elimina el valor al tope de la pila.
+                } else if (expresion.charAt(i) == ')' && (Character) agrupadores.top()!= '(') {//Si se intenta cerrar un paréntesis y no había uno abierto
+                    return false;//La expresión no está balanceada
                 }
-                if(expresion.charAt(i) == '{'){ //Llaves
-                    agrupadores.push(expresion.charAt(i));
-                }else if(expresion.charAt(i) == '}' && (Character) agrupadores.top()== '{'){ //Y el top es lo que corresponde
-                    agrupadores.pop();
-                } else if (expresion.charAt(i) == '}' && (Character) agrupadores.top()!= '{') {
-                    return false;
+                if(expresion.charAt(i) == '{'){ //Si el caracter es una llave que abre
+                    agrupadores.push(expresion.charAt(i)); //Se hace push a la pila con el valor '{'
+                }else if(expresion.charAt(i) == '}' && (Character) agrupadores.top()== '{'){ //Si entra una llave que cierra y la última que abrió fue una llave
+                    agrupadores.pop(); //Se elimina el valor al tope de la pila.
+                } else if (expresion.charAt(i) == '}' && (Character) agrupadores.top()!= '{') { //Si entra una llave que cierra y no hubo una abierta antes
+                    return false; //La expresión no está balanceada
                 }
-                if(expresion.charAt(i) == '['){//Corchetes
-                    agrupadores.push(expresion.charAt(i));
-                }else if(expresion.charAt(i) == ']' && (Character) agrupadores.top()== '['){ //Y el top es lo que corresponde
-                    agrupadores.pop();
-                } else if (expresion.charAt(i) == ']' && (Character) agrupadores.top()!= '[') {
-                    return false;
+                if(expresion.charAt(i) == '['){//Si el caracter es un corchete que abre
+                    agrupadores.push(expresion.charAt(i)); //Se hace push a la pila con ese valor.
+                }else if(expresion.charAt(i) == ']' && (Character) agrupadores.top()== '['){ //Si entra un corchete que abre y lo último que abrió fue un corchete
+                    agrupadores.pop();//Se elimina el valor al tope de la pila.
+                } else if (expresion.charAt(i) == ']' && (Character) agrupadores.top()!= '[') {//Si entra un corchete que cierra y no hubo uno abierto
+                    return false;//La expresión no está balanceada
                 }
             }
         } catch(Exception e){ //En caso de haber una excepción, la expresión no está balanceada.
@@ -74,10 +74,10 @@ public class BalanceoDeAgrupadores {
     /** Método que libera los agrupadores eliminando el resto de los carácteres. **/
     private static void liberaAgrupadores(String expresion) {
         expresion = expresion.replaceAll(" ", ""); //Quitando espacios en blanco.
-        String temporal = "";
+        String temporal = ""; //Creando e inicializando una variable temporal
         for (int i = 0; i < expresion.length(); i++) { //Almacenando únicamente los agrupadores.
             if (expresion.charAt(i) == '(' || expresion.charAt(i) == '{' || expresion.charAt(i) == '[' || expresion.charAt(i) == ']' || expresion.charAt(i) == '}' || expresion.charAt(i) == ')') {
-                temporal += expresion.charAt(i);
+                temporal += expresion.charAt(i);//Agregando los agrupadores a la variable temporal
             }
             expresion = temporal; //Asignándole el nuevo valor a expresion.
         }
