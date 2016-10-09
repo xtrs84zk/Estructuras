@@ -5,31 +5,42 @@ public class TorresDeHanoi {
     /** Método main. Se encarga de mostrar al usuario las instrucciones y colectar la cantidad de discos que se usará en el programa.
      * Llama al método Hanoi y le envía la cantidad de discos que debe usar.**/
     public static void main(String[] args) {
+        int cantidad = 0; //Declarar e inicializar la variable cantidad, que es la cantidad de discos.
         Scanner entrada = new Scanner(System.in); //Inicializando objeto Scanner.
         System.out.println("Torres de Hanoi.");
         System.out.println("Para jugar, necesito el número de discos, este debe ser al menos 2.");
-        System.out.print("¿Cuántos discos usaré? "); //Pidiendo al usuario la cantidad de discos.
-        int n = entrada.nextInt(); // Almacenando la cantidad de discos.
-        System.out.println("Movimientos a realizar:"); //A partir de este punto se mostrarán los movimientos necesarios para resolver el problema.
-        Hanoi(n); //LLamada al método Hanoi.
+        System.out.println("Los movimientos a realizar se mostrarán aquí.");
+        do { //En caso de recibir un parámetro incorrecto, debe seguir pidiendo el valor.
+            try { //El método Hanoi lanza excepciones, hay que estar preparados para atraparlas.
+                System.out.print("¿Cuántos discos usaré? "); //Pidiendo al usuario la cantidad de discos.
+                cantidad = entrada.nextInt(); // Almacenando la cantidad de discos.
+                Hanoi(cantidad); //Llamada al método Hanoi.
+            } catch(Exception e){
+                System.out.println("Necesito al menos dos discos para trabajar. ");
+            }
+        }while(cantidad<2); //El valor mínimo debe ser dos, mientras no se reciba un valor válido, se seguirá pidiendo.
     }
-    /** Método que recibe la cantidad de discos con los que se plantea resolver. Llama al método recursivo en caso de que el número sea valido.
-     * Muestra un mensaje de error en caso de que el número no cumpla los requisitos necesarios.**/
-    private static void Hanoi(int n){
-        if(n >= 2) {
+    /** Método que recibe la cantidad de discos con los que se plantea resolver.
+     * Llama al método recursivo en caso de que el número sea valido.
+     * En caso de que la cantidad no cumpla los requisitos, se lanzará una excepción del tipo IllegalArgumentsException
+     * Porque los argumentos recibidos son inválidos.**/
+    private static void Hanoi(int cantidad) throws Exception{
+        if(cantidad >= 2) {
             int columna1 = 1; //Aquí es donde están todos los discos al inicio.
             int columna2 = 2; //Esta es la columna auxiliar que se utilizará para mover los discos.
             int columna3 = 3; //Esta es la columna de destino, a donde se planea mover los discos.
-            HanoiRecursivo(n, columna1, columna2, columna3);
+            HanoiRecursivo(cantidad, columna1, columna2, columna3);
             System.out.println("Usando esos movimientos, podrás resolverlo. ;) ");
             return;
         }
-        System.out.println( "El número tiene que ser al menos cuatro.");
+        //En caso de que la cantidad no cumpla los requisitos, se lanzará una excepción
+        throw new IllegalArgumentException("Necesito al menos dos discos para trabajar. ");
     }
     /** Método recursivo encargado de mostrar los movimientos necesarios para
      * resolver "las torres de Hanoi" con el número de discos recibido.
-     * Se mueve el disco siguiendo la lógica: columna actual (la cual puede hacia la pila de destino.
-     * Haber llamado al método recursivo decrementando el número de disco asegura que, al final, llegará al caso base.
+     * Se mueve el disco siguiendo la lógica: columna actual () hacia la pila de destino.
+     * Haber llamado al método recursivo decrementando el número de disco asegura que, al final,
+     * llegará al caso base; esto es, que habrá sólo un disco que mover cada vez.
      * Los discos pares se mueven en una dirección, los impares en otra.
      * Recibe el número de discos, la pila de origen, la  pila auxiliar y la pila de destino.**/
     private static void HanoiRecursivo(int n, int origen,  int auxiliar, int destino) {
@@ -39,9 +50,10 @@ public class TorresDeHanoi {
         else { //Caso recursivo
             HanoiRecursivo(n - 1, origen, destino, auxiliar);
             //Llamar al método recursivo con exactamente la misma información, sólo que con un disco debajo en el origen.
-            System.out.println("Mueve el disco que está en la pila " + origen + " a la pila " + destino + "."); //Ta' kbrón
+            System.out.println("Mueve el disco que está en la pila " + origen + " a la pila " + destino + ".");
+            //Muestra en un mensaje hacia donde moverá el disco dependiendo de los paramtetros dados.
             HanoiRecursivo(n - 1, auxiliar, origen, destino);
-            //Llamar al método recursivo diciéndole que mueva el disco inferior de la columna auxiliar a la primer columna y luego a la tercera.
+            //Llamar al método recursivo diciéndole que mueva el disco inferior de la columna auxiliar a la tercera.
         }
     }
 }
