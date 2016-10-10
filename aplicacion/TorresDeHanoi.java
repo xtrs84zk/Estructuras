@@ -12,8 +12,6 @@ public class TorresDeHanoi {
         Scanner entrada = new Scanner(System.in); //Inicializando objeto Scanner.
         System.out.println("Torres de Hanoi.");
         System.out.println("Para jugar, sólo necesito la cantidad de discos. Debe ser al menos 2.");
-        System.out.println("¿Qué método de resolución desea usar? 1) Recursivo 2) Iterativo");
-        if (entrada.nextInt() == 1) {
             do { //En caso de recibir un parámetro incorrecto, debe seguir pidiendo el valor.
                 try { //El método Hanoi lanza excepciones, hay que estar preparados para atraparlas.
                     System.out.print("¿Cuántos discos usaré? "); //Pidiendo al usuario la cantidad de discos.
@@ -29,11 +27,6 @@ public class TorresDeHanoi {
                     return; //Terminar el método main para evitar más errores.
                 }
             } while (cantidad < 2); //La cantidad se seguirá pidiendo mientras se reciba una inválida.
-        } else {
-            System.out.print("¿Cuántos discos usaré? "); //Pidiendo al usuario la cantidad de discos.
-            cantidad = entrada.nextInt();
-            HanoiIterativo(cantidad);
-        }
     }
     /** Método que recibe la cantidad de discos con los que se plantea resolver.
      * Llama al método recursivo en caso de que el número sea valido.
@@ -71,41 +64,5 @@ public class TorresDeHanoi {
             HanoiRecursivo(n - 1, auxiliar, origen, destino);
             //Llamar al método recursivo diciéndole que mueva el disco inferior de la columna auxiliar a la tercera.
         }
-    }
-
-    private static void HanoiIterativo(int n){
-        String[] movimientoImpar = {"Mueve el disco que está en la pila 1 a la pila 3" ,
-                                    "Mueve el disco que está en la pila 1 a la pila 2",
-                                    "Mueve el disco que está en la pila 3 a la pila 2"};
-        String[] movimientoPar = {"Mueve el disco que está en la pila 1 a la pila 2.",
-                                  "Mueve el disco que está en la pila 1 a la pila 3",
-                                  "Mueve el disco que está en la pila 2 a la pila 3", };
-        int movimientos, mensaje, movimientosAproximados;
-        movimientosAproximados = (int) Math.pow(n,2)-1;
-        movimientos = 0;
-        mensaje = 0;
-        if(n%2==0){
-            do{
-                System.out.println(movimientoPar[mensaje]);
-                movimientos++;
-                mensaje = rotarMensaje(mensaje);
-            } while (movimientos<=movimientosAproximados);
-        } else {
-            do{
-                System.out.println(movimientoImpar[mensaje]);
-                movimientos++;
-                mensaje = rotarMensaje(mensaje);
-            } while (movimientos<=movimientosAproximados);
-        }
-        System.out.println("Cantidad de movimientos: " + movimientos);
-    }
-
-    private static int rotarMensaje(int mensaje){
-        switch (mensaje) {
-            case 0: return 1;
-            case 1: return 2;
-            case 2: return 0;
-        }
-        return mensaje;
     }
 }
