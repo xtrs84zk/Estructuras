@@ -19,17 +19,15 @@ public class InfijoAPosfijo extends BalanceoDeAgrupadores{
                         try {// Saca elementos de la pila y los agrega a la expresión convertida.
                             expresionConvertidaAPostfijo += pilaDeOperadores.pop();
                         } finally { //Forma el mensaje con las expresiones.
-                            mensaje += expresionEnInfijo + "en postfijo es: " + expresionConvertidaAPostfijo;
+                            mensaje += expresionEnInfijo + " en postfijo es: " + expresionConvertidaAPostfijo;
                         }
                         return expresionConvertidaAPostfijo; //Regresa la expresión convertida.
                     } else if (expresionEnInfijo.charAt(posicion) == '(') {//Si encuentra un paréntesis de apertura.
                         pilaDeOperadores.push(expresionEnInfijo.charAt(posicion)); //Lo mete a la pila
-                        posicion++; //E incrementa la posición actual.
                     } else if (expresionEnInfijo.charAt(posicion) == ')') { //Si encuentra un paréntesis de cierre.
                         do {
                             pilaDeOperadores.pop(); //Saca de la pila mientras no encuentre un paréntesis de apertura.
                         } while ((Character) pilaDeOperadores.pop() != '(');
-                        posicion++; //E incrementa la posición actual.
                     } else if (esOperador(expresionEnInfijo.charAt(posicion))) { //Si encuentra un operador
                         // Determina la precedencia del operador y precedencia del
                         // elemento tope de la pila
@@ -41,13 +39,11 @@ public class InfijoAPosfijo extends BalanceoDeAgrupadores{
                             } else
                                 // Si la precedencia del operador no es menor que la del elemento al tope, lo mete a la pila.
                                 pilaDeOperadores.push(expresionEnInfijo.charAt(posicion));
-                                posicion++; //incrementa la posición.
                         }
                     } else { //Si no encontró operadores ni paréntesis, se procede a agregar a la expresión en postfijo.
                         expresionConvertidaAPostfijo += expresionEnInfijo.charAt(posicion);
-                        System.out.println(expresionConvertidaAPostfijo);// BORRAR
-                        posicion++; //Incrementa la posición antes de continuar
                     }
+                    posicion++;
                 } catch (Exception e) {
                     mensaje = "Excepción atrapada: " + e.getMessage();
                 }
@@ -64,9 +60,12 @@ public class InfijoAPosfijo extends BalanceoDeAgrupadores{
     private boolean tieneMenorOIgualPrecedencia(char operador) throws Exception {
         char auxiliar = (Character) pilaDeOperadores.top();
         boolean flag = true;
+        //El operador es de suma o resta
         if (operador == '+' || operador == '-'){
+            //Si lo que está al tope de la pila tiene mayor precedencia que + o - , la bandera cambia a false.
             if (auxiliar == '*' || auxiliar == '/' || auxiliar == '%') flag = false;
         } else {
+            //Si lo que está al tope de la pila tiene menor precedencia que *,/,%; la bandera cambia a false.
             if (auxiliar == '-' || auxiliar == '+') flag = false;
         }
         return flag;
