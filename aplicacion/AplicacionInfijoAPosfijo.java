@@ -7,77 +7,70 @@ import java.util.Scanner;
 
 /** Created by xtrs84zk on 16/10/2016. **/
 public class AplicacionInfijoAPosfijo {
-    private static Stack operadores = new StackUnlimited();
+    private static Stack pilaDeOperadores = new StackUnlimited();
     public static void main(String[] args) {
         //Declaración de variables
         int posicion = 0;
-        String expresionConvertidaAPosfijo, expresionEnInfijo, log, mensaje;
+        String expresionEnInfijo;
         Scanner entrada;
         //Creación de objetos
         entrada = new Scanner(System.in);
-        final String operador = "+ * - / % ";
-        System.out.println("Introduce la expresión: ");
+        final String operadores = "+ * - / % ";
+        System.out.print("Introduce la expresión: ");
         expresionEnInfijo = entrada.next();
-        expresionConvertidaAPosfijo = "";
-        mensaje = "";
-        log = "";
-
-        cicloPrincipal:
-        //Este es el ciclo donde se realiza el proceso de conversión.
+        System.out.print("Convirtiendo a postfijo...\n");
+        System.out.print("La expresión convertida es: \"");
         do {
             if (posicion == expresionEnInfijo.length()) { //Si se ha llegado al fin de la expresión.
                 try {
-                    while (!operadores.isEmpty()) {
-                        expresionConvertidaAPosfijo += (Character) operadores.pop();
+                    while (!pilaDeOperadores.isEmpty()) {
+                        System.out.print(pilaDeOperadores.pop());
                     }
                 } catch (Exception e) {
-                    log += "\n" + e.getMessage();
+                    System.err.print(e.getMessage());
                 } finally {
-                    mensaje = "La expresión que el usuario introdujo es: \"" + expresionEnInfijo + "\"" +
-                            "\nConvertida a posfijo es: \"" + expresionConvertidaAPosfijo + "\".";
+                    System.out.print("\".");
                 }
                 break;
             } else if (expresionEnInfijo.charAt(posicion) == '(') {
-                operadores.push('(');
+                pilaDeOperadores.push('(');
             } else if (expresionEnInfijo.charAt(posicion) == ')') {
                 try {
                     do {
-                        if ((Character) operadores.top() == '(') {
-                            operadores.pop();
+                        if ((Character) pilaDeOperadores.top() == '(') {
+                            pilaDeOperadores.pop();
                         } else {
-                            expresionConvertidaAPosfijo += (Character) operadores.pop();
+                            System.out.print(pilaDeOperadores.pop());
                         }
-                    } while ((Character) operadores.pop() != '(');
+                    } while ((Character) pilaDeOperadores.pop() != '(');
                 } catch (Exception e) {
-                    log += "\n" + e.getMessage();
+                    System.err.print(e.getMessage());
                 }
-            } else if (operador.contains(expresionEnInfijo.charAt(posicion) + " ")) {
-                if (!operadores.isEmpty()) {
+            } else if (operadores.contains(expresionEnInfijo.charAt(posicion) + " ")) {
+                if (!pilaDeOperadores.isEmpty()) {
                     try {
                         while (tieneMenorOIgualPrecedencia(expresionEnInfijo.charAt(posicion))) {
-                            if ((Character) operadores.top() == '(') {
+                            if ((Character) pilaDeOperadores.top() == '(') {
                                 break;
                             } else {
-                                expresionConvertidaAPosfijo += operadores.pop();
+                                System.out.print(pilaDeOperadores.pop());
                             }
                         }
                     } catch (Exception e) {
-                        log += "\n" + e.getMessage();
+                        System.err.print(e.getMessage());
                     }
                 }
-                operadores.push(expresionEnInfijo.charAt(posicion));
+                pilaDeOperadores.push(expresionEnInfijo.charAt(posicion));
             } else {
-                expresionConvertidaAPosfijo += expresionEnInfijo.charAt(posicion);
+                System.out.print(expresionEnInfijo.charAt(posicion));
             }
             posicion++;
         } while (posicion < expresionEnInfijo.length() + 1);
-        System.out.println(mensaje);
-        System.out.println(log);
     }
 
-    private static boolean tieneMenorOIgualPrecedencia(char operador) throws Exception{
-            char auxiliar = (Character) operadores.top();
-            if(operador == '*' || operador == '/' || operador == '%'){
+    private static boolean tieneMenorOIgualPrecedencia(char operadores) throws Exception{
+            char auxiliar = (Character) pilaDeOperadores.top();
+            if(operadores == '*' || operadores == '/' || operadores == '%'){
                 if(auxiliar == '+' || auxiliar == '-'){
                     return false;
                 }
