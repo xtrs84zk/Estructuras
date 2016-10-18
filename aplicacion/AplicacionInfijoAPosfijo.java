@@ -5,75 +5,83 @@ import estructuras.StackUnlimited;
 
 import java.util.Scanner;
 
-/** Created by xtrs84zk on 16/10/2016. **/
+/** Created on 14/10/2016. **/
 public class AplicacionInfijoAPosfijo {
+    //Stack de tipo StackUnlimited donde se almacenan los operadores
+    // mientras se decide en qué lugar de la expresión serán mostrados.
     private static Stack pilaDeOperadores = new StackUnlimited();
     public static void main(String[] args) {
         //Declaración de variables
-        int posicion = 0;
+        int posicionActualEnLaExpresion = 0;
         String expresionEnInfijo;
         Scanner entrada;
         //Creación de objetos
         entrada = new Scanner(System.in);
-        final String operadores = "+ * - / % ";
-        System.out.print("Introduce la expresión: ");
-        expresionEnInfijo = entrada.next();
+        final String operadores = "+ * - / % "; //Operadores que puede manejar la clase.
+        System.out.print("Introduce la expresión: "); //Pidiendo la expresión al usuario.
+        expresionEnInfijo = entrada.next(); //Almacenando la expresión del usuario.
         System.out.print("Convirtiendo a postfijo...\n");
         System.out.print("La expresión convertida es: \"");
         do {
-            if (posicion == expresionEnInfijo.length()) { //Si se ha llegado al fin de la expresión.
-                try {
+            if (posicionActualEnLaExpresion == expresionEnInfijo.length()) { //Si se ha llegado al fin de la expresión.
+                try { //Se saca lo que esté en la pila de operadores a la salida.
                     while (!pilaDeOperadores.isEmpty()) {
                         System.out.print(pilaDeOperadores.pop());
                     }
-                } catch (Exception e) {
+                } catch (Exception e) { //Los errores se imprimen en la salida de errores.
                     System.err.print(e.getMessage());
                 } finally {
-                    System.out.print("\".");
+                    System.out.print("\"."); //Se cierra la expresión con una comilla doble.
                 }
-                break;
-            } else if (expresionEnInfijo.charAt(posicion) == '(') {
-                pilaDeOperadores.push('(');
-            } else if (expresionEnInfijo.charAt(posicion) == ')') {
+                break; //Se rompe el ciclo do
+            } else if (expresionEnInfijo.charAt(posicionActualEnLaExpresion) == '(') {
+                pilaDeOperadores.push('('); //Si se encuentra un paréntesis de apertura, se almacena en la pila.
+            } else if (expresionEnInfijo.charAt(posicionActualEnLaExpresion) == ')') {
+                //Si encuentra un paréntesis de cierre, saca de la pila hasta encontrar alguno abierto.
                 try {
                     do {
                         if ((Character) pilaDeOperadores.top() == '(') {
                             pilaDeOperadores.pop();
-                        } else {
+                        } else { //Si el carácter no es un paréntesis de apertura, lo manda a la salida.
                             System.out.print(pilaDeOperadores.pop());
                         }
                     } while ((Character) pilaDeOperadores.pop() != '(');
-                } catch (Exception e) {
+                } catch (Exception e) { //Los errores se imprimen en la salida de errores.
                     System.err.print(e.getMessage());
                 }
-            } else if (operadores.contains(expresionEnInfijo.charAt(posicion) + " ")) {
+            } else if (operadores.contains(expresionEnInfijo.charAt(posicionActualEnLaExpresion) + " ")) {
+                //En caso de encontrar un operador, se procede a verificar que la pila no esté vacía.
                 if (!pilaDeOperadores.isEmpty()) {
-                    try {
-                        while (tieneMenorOIgualPrecedencia(expresionEnInfijo.charAt(posicion))) {
+                    try { //Si la pila no está vacía, se procede a verificar la precedencia.
+                        while (tieneMenorOIgualPrecedencia(expresionEnInfijo.charAt(posicionActualEnLaExpresion))) {
                             if ((Character) pilaDeOperadores.top() == '(') {
-                                break;
-                            } else {
+                                break; //Si es un paréntesis, rompe y continúa el ciclo.
+                            } else { //Saca de la pila aquello que no sea un paréntesis de apertura.
                                 System.out.print(pilaDeOperadores.pop());
                             }
                         }
-                    } catch (Exception e) {
+                    } catch (Exception e) { //Los errores se imprimen en la salida de errores.
                         System.err.print(e.getMessage());
                     }
                 }
-                pilaDeOperadores.push(expresionEnInfijo.charAt(posicion));
-            } else {
-                System.out.print(expresionEnInfijo.charAt(posicion));
+                //Si ha llegado hasta este punto, agrega el operador a la pila.
+                pilaDeOperadores.push(expresionEnInfijo.charAt(posicionActualEnLaExpresion));
+            } else { //En caso de encontrar cualquier otro carácter, lo manda a la salida.
+                System.out.print(expresionEnInfijo.charAt(posicionActualEnLaExpresion));
             }
-            posicion++;
-        } while (posicion < expresionEnInfijo.length() + 1);
+            posicionActualEnLaExpresion++;
+            //Mientras la posición actual esté dentro de la expresión. Y uno más.
+        } while (posicionActualEnLaExpresion < expresionEnInfijo.length() + 1);
     }
-
-    private static boolean tieneMenorOIgualPrecedencia(char operadores) throws Exception{
+    /** Método que determina la precedencia de un operador contra el que esté al tope de la pila
+     * Recibe un operador y lo compara contra el valor que esté al tope de la pila de operadores
+     * Dicha pila es una variable de clase estática por lo que es la misma en cualquier método
+     * Regresa true cuando la precedencia del operador recibido es menor que la del operador
+     * que está al tope de la pila, de no ser así, regresa false.**/
+    private static boolean tieneMenorOIgualPrecedencia(char operador) throws Exception{
             char auxiliar = (Character) pilaDeOperadores.top();
-            if(operadores == '*' || operadores == '/' || operadores == '%'){
-                if(auxiliar == '+' || auxiliar == '-'){
-                    return false;
-                }
+            if(operador == '*' || operador == '/' || operador == '%'){
+                if(auxiliar == '+' || auxiliar == '-') return false;
             }
         return true;
     }
