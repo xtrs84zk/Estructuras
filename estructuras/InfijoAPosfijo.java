@@ -16,17 +16,19 @@ public class InfijoAPosfijo extends BalanceoDeAgrupadores{
             do {
                 try {
                     if (posicion == expresionEnInfijo.length() - 1) { // Si es el fin de la cadena
-                        try {// Saca elementos de la pila y los agrega a la expresión convertida.
+                        // Saca elementos de la pila y los agrega a la expresión convertida.
                             expresionConvertidaAPostfijo += pilaDeOperadores.pop();
-                        } finally { //Forma el mensaje con las expresiones.
                             mensaje += expresionEnInfijo + " en postfijo es: " + expresionConvertidaAPostfijo;
-                        }
-                        return expresionConvertidaAPostfijo; //Regresa la expresión convertida.
+                        break;//Regresa la expresión convertida.
                     } else if (expresionEnInfijo.charAt(posicion) == '(') {//Si encuentra un paréntesis de apertura.
                         pilaDeOperadores.push(expresionEnInfijo.charAt(posicion)); //Lo mete a la pila
                     } else if (expresionEnInfijo.charAt(posicion) == ')') { //Si encuentra un paréntesis de cierre.
-                        do {
-                            pilaDeOperadores.pop(); //Saca de la pila mientras no encuentre un paréntesis de apertura.
+                        do { //Saca de la pila mientras no encuentre un paréntesis de apertura.
+                            if((Character) pilaDeOperadores.top() != '('){
+                                pilaDeOperadores.pop();
+                            }else {
+                                expresionConvertidaAPostfijo += pilaDeOperadores.pop();
+                            }
                         } while ((Character) pilaDeOperadores.pop() != '(');
                     } else if (esOperador(expresionEnInfijo.charAt(posicion))) { //Si encuentra un operador
                         // Determina la precedencia del operador y precedencia del
@@ -45,9 +47,9 @@ public class InfijoAPosfijo extends BalanceoDeAgrupadores{
                     }
                     posicion++;
                 } catch (Exception e) {
-                    mensaje = "Excepción atrapada: " + e.getMessage();
+                    mensaje = "Error: " + e.getMessage();
                 }
-            } while (posicion != expresionEnInfijo.length());
+            } while (posicion != expresionEnInfijo.length() + 1);
             return expresionConvertidaAPostfijo;
         }
 
@@ -56,19 +58,14 @@ public class InfijoAPosfijo extends BalanceoDeAgrupadores{
             if (operadore == caracter) return true; //En caso de encontrarlo, regresa true.
         return false;//Si el foreach ha terminado, regresa false.
     }
-
+    /** Método tieneMenorOIgualPrecedencia que d **/
     private boolean tieneMenorOIgualPrecedencia(char operador) throws Exception {
         char auxiliar = (Character) pilaDeOperadores.top();
-        boolean flag = true;
-        //El operador es de suma o resta
-        if (operador == '+' || operador == '-'){
-            //Si lo que está al tope de la pila tiene mayor precedencia que + o - , la bandera cambia a false.
-            if (auxiliar == '*' || auxiliar == '/' || auxiliar == '%') flag = false;
-        } else {
+        if (operador == '*' || operador == '/' || operador == '%'){
             //Si lo que está al tope de la pila tiene menor precedencia que *,/,%; la bandera cambia a false.
-            if (auxiliar == '-' || auxiliar == '+') flag = false;
+            if (auxiliar == '-' || auxiliar == '+') return false;
         }
-        return flag;
+        return true;
     }
     
     @Override
