@@ -71,7 +71,7 @@ public class AplicacionInfijoAPosfijo {
             }
             posicionActualEnLaExpresion++;
             //Mientras la posición actual esté dentro de la expresión. Y uno más.
-        } while (posicionActualEnLaExpresion < expresionEnInfijo.length() + 1);
+        } while (posicionActualEnLaExpresion <= expresionEnInfijo.length());
     }
     /** Método que determina la precedencia de un operador contra el que esté al tope de la pila
      * Recibe un operador y lo compara contra el valor que esté al tope de la pila de operadores
