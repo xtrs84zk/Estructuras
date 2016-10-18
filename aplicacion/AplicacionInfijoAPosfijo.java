@@ -70,7 +70,7 @@ public class AplicacionInfijoAPosfijo {
                 System.out.print(expresionEnInfijo.charAt(posicionActualEnLaExpresion));
             }
             posicionActualEnLaExpresion++;
-            //Mientras la posición actual esté dentro de la expresión. Y uno más.
+            //Mientras la posición actual esté dentro de la expresión.
         } while (posicionActualEnLaExpresion <= expresionEnInfijo.length());
     }
     /** Método que determina la precedencia de un operador contra el que esté al tope de la pila
