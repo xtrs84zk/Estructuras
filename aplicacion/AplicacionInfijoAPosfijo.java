@@ -20,7 +20,7 @@ public class AplicacionInfijoAPosfijo {
         final String operadores = "+ * - / % "; //Operadores que puede manejar la clase.
         System.out.print("Introduce la expresión: "); //Pidiendo la expresión al usuario.
         expresionEnInfijo = entrada.next(); //Almacenando la expresión del usuario.
-        System.out.print("Convirtiendo a postfijo...\n");
+        System.out.print("Convirtiendo a postfijo ...\n");
         System.out.print("La expresión convertida es: \"");
         do {
             if (posicionActualEnLaExpresion == expresionEnInfijo.length()) { //Si se ha llegado al fin de la expresión.
@@ -31,7 +31,7 @@ public class AplicacionInfijoAPosfijo {
                 } catch (Exception e) { //Los errores se imprimen en la salida de errores.
                     System.err.print(e.getMessage());
                 } finally {
-                    System.out.print("\"."); //Se cierra la expresión con una comilla doble.
+                    System.out.print("\""); //Se cierra la expresión con una comilla doble.
                 }
                 break; //Se rompe el ciclo do
             } else if (expresionEnInfijo.charAt(posicionActualEnLaExpresion) == '(') {
