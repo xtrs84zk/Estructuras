@@ -3,7 +3,7 @@ package estructuras;
  * Write a description of class StackLimited here.
  * 
  * @author (Javier Sánchez) 
- * @version (19-09-2016)
+ * version (19-09-2016)
  */
 public class StackLimited implements Stack{
     private static Object[] stack; //Arreglo que actuará como pila
