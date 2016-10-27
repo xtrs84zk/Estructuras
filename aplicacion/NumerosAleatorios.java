@@ -1,8 +1,6 @@
 package aplicacion;
-
 import java.util.Arrays;
 import java.util.Random;
-
 /**
  * Created by Xavier Sánchez on 06/10/2016.
  **/

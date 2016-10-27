@@ -1,8 +1,6 @@
 package estructuras;
 
-/**
- * Created by xtrs84zk on 15/10/2016.
- */
+/** Created by xtrs84zk on 15/10/2016 . **/
 public class BalanceoDeAgrupadores{
         /**
          * Método que evalúa la expresión y regresa un boolean.
