@@ -56,7 +56,7 @@ public class SimuladorDeBanco {
                 elClienteLlegaAlaCaja();
             }
         } else {
-            while(!filaDelBanco.isEmpty(){
+            while(!filaDelBanco.isEmpty()){
                 elClienteLlegaAlaCaja();
             }
         }
