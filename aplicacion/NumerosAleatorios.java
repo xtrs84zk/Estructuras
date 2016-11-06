@@ -1,9 +1,7 @@
 package aplicacion;
 import java.util.Arrays;
 import java.util.Random;
-/**
- * Created by Xavier Sánchez on 06/10/2016.
- **/
+/** Created by Xavier Sánchez on 06/10/2016. **/
 public class NumerosAleatorios {
     public static void main(String[] args) {
         Random rdn = new Random();

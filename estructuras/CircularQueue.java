@@ -36,6 +36,11 @@ public class CircularQueue implements Queue {
             throw new Exception("La cola está llena.");
         }
     }
+
+    public Object extract() {
+        return null;
+    }
+
     private int lugarAInsertar(){
         if(rear<queue.length-1){
             return rear;
