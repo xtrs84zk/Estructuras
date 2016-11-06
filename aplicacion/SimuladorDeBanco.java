@@ -5,14 +5,15 @@ import java.util.Scanner;
 
 /** Created by xtrs84zk on 06/11/2016. **/
 public class SimuladorDeBanco {
-    static Queue filaDelBanco;
-    static Random rdn = new Random();
-    static int turno;
-    static int numeroDeCajasAbiertas;
-    static int[] caja;
-    static int tiempoLimite, tiempoActual,  dia, probabilidad;
+    private static Queue filaDelBanco;
+    private static Random rdn = new Random();
+    private static int turno;
+    private static int numeroDeCajasAbiertas;
+    private static int[] caja;
+    private static int tiempoLimite, tiempoActual;
 
     public static void main (String [] args){
+        int dia, probabilidad;
         Scanner s = new Scanner(System.in);
         System.out.print("¿Cuánto estará abierto el banco?");
         tiempoLimite= s.nextInt();
