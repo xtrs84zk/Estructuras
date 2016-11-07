@@ -15,6 +15,10 @@ public class CircularQueue implements Queue {
         return rear == front && queue[front] == null;
     }
 
+    public Object front() throws Exception {
+        return queue[front];
+    }
+
     public boolean isFull(){
         return rear == front && queue[front] != null;
     }
@@ -29,11 +33,11 @@ public class CircularQueue implements Queue {
         }
 
     }
-    public void insert (Object elemento) throws Exception{
+    public void insert (Object elemento) {//} throws Exception{
         if(!isFull()) {
             queue[lugarAInsertar()] = elemento;
         } else {
-            throw new Exception("La cola está llena.");
+            //throw new Exception("La cola está llena.");
         }
     }
 

@@ -21,7 +21,7 @@ public class QueueLimited implements Queue{
         if(!isFull()){
             queue[rear++] = element;
         } else {
-            throw new Exception("La cola está llena.");
+            //throw new Exception("La cola está llena.");
         }
     }
 

@@ -22,7 +22,9 @@ public class QueueUnlimited implements Queue {
 
     public void insert(Object element) {
         Object[] auxiliar = new Object[queue.length+1];
-        System.arraycopy(queue, 0, auxiliar, 0, queue.length-1);
+        if (queue.length>0){
+            System.arraycopy(queue, 0, auxiliar, 0, queue.length - 1);
+        }
         auxiliar[rear++] = element;
         queue = auxiliar;
     }
