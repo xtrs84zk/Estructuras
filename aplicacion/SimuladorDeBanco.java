@@ -82,14 +82,18 @@ public class SimuladorDeBanco {
             if(auxiliar<=probabilidad){
                 llegadaDeClienteAlBanco();
             } else {
-                try {
-                    atenderClientes();
-                }catch(Exception e) {
+                //Mientras haya al menos una caja libre, los clientes pasan a caja.
+                while(hayAlMenosUnaCajaLibre() && !filaDelBanco.isEmpty()){
                     try {
                         elClienteLlegaAlaCaja();
                     }catch(Exception ex){
-                        System.err.println(ex.getMessage());
+                        System.err.print("");
                     }
+                }
+                try {
+                    atenderClientes();
+                }catch(Exception e) {
+                    //Es normal que esta excepción se produzca.
                 }
             }
         }
@@ -109,13 +113,8 @@ public class SimuladorDeBanco {
      * y a las cajas que estén vacías en dicho momento.**/
     private static void elClienteLlegaAlaCaja() throws Exception{
         int cajaQueSeUsara = rdn.nextInt(cantidadDeCajasAbiertas);
-        boolean hayCajasLibres = true;
-        //Se verifica que haya cajas libres antes de intentar pasar clientes a alguna.
-        for(int i = 0; i<caja.length; i++){
-            if(caja[i] != null) hayCajasLibres = false; break;
-        }
         //En caso de que haya cajas libres, "el cliente decide a cuál ir".
-        if(hayCajasLibres){
+        if(hayAlMenosUnaCajaLibre()){
             while(caja[cajaQueSeUsara] != null){
                 cajaQueSeUsara = rdn.nextInt(cantidadDeCajasAbiertas);
             }
@@ -151,6 +150,16 @@ public class SimuladorDeBanco {
             if(caja[i] != null) return false;
         }
             return true;
+    }
+    /** Método hayAlMenosUnaCajaLibre que verifica que haya al menos una caja libre.
+     *  En caso de encontrar al menos una caja libre, regresa true.
+     *  Al no encontrar cajas libres, regresará false.**/
+    private static boolean hayAlMenosUnaCajaLibre(){
+        //Se verifica que haya cajas libres de una en una.
+        for(int i = 0; i<caja.length; i++){
+            if(caja[i] != null) return false;
+        }
+        return true;
     }
     /** Método imprimirElTiempoActual que imprime el tiempo actual.
      * No tiene valores de retorno ni recibe parámetros.**/
