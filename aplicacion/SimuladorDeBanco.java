@@ -18,13 +18,13 @@ public class SimuladorDeBanco {
         Scanner s = new Scanner(System.in);
         //Pidiendo y asignando la cantidad de horas que el banco abrirá
         do {
-            System.out.print("¿Cuántas horas estará abierto el banco?");
+            System.out.print("¿Cuántas horas estará abierto el banco? ");
             tiempoLimite = s.nextInt();
         }while(tiempoLimite<0 || tiempoLimite>7);
         //Convirtiendo las horas elegidas a segundos.
         tiempoLimite*=3600;
         //Pidiendo y asignando la cantidad de cajas que estarán abiertas
-        System.out.print("¿Cuántas cajas estarán abiertas?");
+        System.out.print("¿Cuántas cajas estarán abiertas? ");
         cantidadDeCajasAbiertas = s.nextInt();
         //Inicializando la fila del banco, el tiempo actual, las cajas que se abrirán y el turno.
         filaDelBanco  = new QueueUnlimited();
@@ -34,7 +34,7 @@ public class SimuladorDeBanco {
         //Pidiendo el día actual para ponderar la probabilidad de que lleguen
         //nuevos clientes o sean atendidos los que están en el banco.
         do{
-            System.out.print("¿Qué día del mes es?");
+            System.out.print("¿Qué día del mes es? ");
             dia = s.nextInt();
         }while(dia>31 || dia<1);
         if(dia == 15 || dia == 30){
