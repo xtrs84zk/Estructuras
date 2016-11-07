@@ -155,11 +155,13 @@ public class SimuladorDeBanco {
      *  En caso de encontrar al menos una caja libre, regresa true.
      *  Al no encontrar cajas libres, regresará false.**/
     private static boolean hayAlMenosUnaCajaLibre(){
+        //No hay cajas libres a menos que se demuestre lo contrario.
         //Se verifica que haya cajas libres de una en una.
         for(int i = 0; i<caja.length; i++){
-            if(caja[i] != null) return false;
+            //Al encontrar una caja libre, regresa true.
+            if(caja[i] == null) return true;
         }
-        return true;
+        return false;
     }
     /** Método imprimirElTiempoActual que imprime el tiempo actual.
      * No tiene valores de retorno ni recibe parámetros.**/
