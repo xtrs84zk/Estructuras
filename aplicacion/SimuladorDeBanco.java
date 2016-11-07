@@ -10,15 +10,19 @@ public class SimuladorDeBanco {
     private static Queue filaDelBanco;
     private static Random rdn = new Random();
     private static int tiempoLimite, tiempoActual, turno, cantidadDeCajasAbiertas;
-    private static Object caja[];
+    private static Object[] caja;
 
     public static void main (String [] args){
         //Declaración de variables y creación de objetos.
         int dia, probabilidad;
         Scanner s = new Scanner(System.in);
         //Pidiendo y asignando la cantidad de horas que el banco abrirá
-        System.out.print("¿Cuántas horas estará abierto el banco?");
-        tiempoLimite= (s.nextInt()*3600);
+        do {
+            System.out.print("¿Cuántas horas estará abierto el banco?");
+            tiempoLimite = s.nextInt();
+        }while(tiempoLimite<0 || tiempoLimite>7);
+        //Convirtiendo las horas elegidas a segundos.
+        tiempoLimite*=3600;
         //Pidiendo y asignando la cantidad de cajas que estarán abiertas
         System.out.print("¿Cuántas cajas estarán abiertas?");
         cantidadDeCajasAbiertas = s.nextInt();
@@ -38,11 +42,12 @@ public class SimuladorDeBanco {
         } else {
             probabilidad = 60;
         }
+        imprimirElTiempoActual();
+        System.out.println("El banco abre sus puertas.");
         //Mientras el tiempo a abrir el banco no sea excedido, los clientes pueden
         //llegar y ser atendidos.
         do{
             tiempoActual += rdn.nextInt(300);
-            imprimirElTiempoActual();
             decidirSiLlegaOSaleUnCliente(probabilidad);
         }while(tiempoActual<= tiempoLimite);
         //Si el tiempo ha sobrepasado el tiempo que el banco debe estar abierto,
@@ -58,16 +63,19 @@ public class SimuladorDeBanco {
 
         //Una vez que se ha vaciado la fila, se revisa que las cajas estén vacías
         //y se atiende a los clientes remanentes.
-            while(!lasCajasEstanVacias()){
-                atenderClientes();
+            while(!lasCajasEstanVacias()) {
+                try {
+                    atenderClientes();
+                }catch(Exception e){
+                    System.out.println(e.getMessage());
+                }
             }
         imprimirElTiempoActual();
+        System.out.println("Todos los clientes han sido atendidos.");
         System.out.println("El banco ha terminado sus actividades.");
     }
     /** Método que decide si llegan nuevos clientes o son atendidos los que ya están ahí.
-     * Recibe la probabilidad de que un nuevo cliente llegue.
-     * En caso de ser invocado cuando el tiempo ha terminado, no puede recibir más clientes
-     * así que comienza a pasar los clientes que estén en la fila hacía las cajas para ser atendidos.**/
+     * Recibe la probabilidad de que un nuevo cliente llegue.**/
     private static void  decidirSiLlegaOSaleUnCliente(int probabilidad){
         if(tiempoActual<=tiempoLimite){
             int auxiliar = rdn.nextInt(99)+1;
@@ -75,18 +83,14 @@ public class SimuladorDeBanco {
                 llegadaDeClienteAlBanco();
             } else {
                 try {
-                    elClienteLlegaAlaCaja();
-                }catch(Exception e){
-                    System.err.println("No hay clientes en la fila.");
+                    atenderClientes();
+                }catch(Exception e) {
+                    try {
+                        elClienteLlegaAlaCaja();
+                    }catch(Exception ex){
+                        System.err.println(ex.getMessage());
+                    }
                 }
-            }
-        } else {
-            try {
-                while (!filaDelBanco.isEmpty()) {
-                    elClienteLlegaAlaCaja();
-                }
-            }catch(Exception e){
-                System.err.println("No hay clientes en la fila.");
             }
         }
     }
@@ -104,13 +108,22 @@ public class SimuladorDeBanco {
      * Define a qué caja pasará el cliente con base en las cajas abiertas
      * y a las cajas que estén vacías en dicho momento.**/
     private static void elClienteLlegaAlaCaja() throws Exception{
-        int cajaQueSeUsara;
-        do{
-            cajaQueSeUsara = rdn.nextInt(cantidadDeCajasAbiertas);
-        }while((int) caja[cajaQueSeUsara] != 0);
+        int cajaQueSeUsara = 0;
+        boolean hayCajasLibres = true;
+        //Se verifica que haya cajas libres antes de intentar pasar clientes a alguna.
+        for(int i = 0; i<caja.length; i++){
+            if(caja[i] != null) hayCajasLibres = false; break;
+        }
+        //En caso de que haya cajas libres, "el cliente decide a cuál ir".
+        if(hayCajasLibres){
+            while(caja[cajaQueSeUsara] != null){
+                cajaQueSeUsara = rdn.nextInt(cantidadDeCajasAbiertas);
+            }
+        } else {
+            throw new Exception("No hay cajas libres.");
+        }
             imprimirElTiempoActual();
-            System.out.println("El cliente " + filaDelBanco.front() +
-                    " pasa a la caja " + (cajaQueSeUsara+1));
+            System.out.println("El cliente " + filaDelBanco.front() + " pasa a la caja " + (cajaQueSeUsara+1));
             caja[cajaQueSeUsara] = filaDelBanco.extract();
             atenderClientes();
     }
@@ -118,38 +131,36 @@ public class SimuladorDeBanco {
      * Define qué cliente atender con base en la cantidad de cajas ocupadas.
      * Imprime el momento en que un cliente es atendido, junto con su turno.
      * Finalmente, vacía la caja en la que estuvo el cliente.**/
-    private static void atenderClientes(){
-        tiempoActual += rdn.nextInt(300);
-        System.out.println("------ " + tiempoActual/60 +  ":" + tiempoActual%60 + "------");
-        int laCajaQueSeVaciaraPorqueElClienteYaFueAtendido;
+    private static void atenderClientes()throws Exception{
+        int cajaAVaciarPorqueElClienteYaFueAtendido;
+        if(lasCajasEstanVacias()) throw new Exception("Todas las cajas están vacías.");
         do{
-            laCajaQueSeVaciaraPorqueElClienteYaFueAtendido = rdn.nextInt(cantidadDeCajasAbiertas);
-        }while((int) caja[laCajaQueSeVaciaraPorqueElClienteYaFueAtendido] == 0);
-        System.out.println("El cliente " + caja[laCajaQueSeVaciaraPorqueElClienteYaFueAtendido] +
-                " ha sido atendido y saldrá del banco. ");
-        caja[laCajaQueSeVaciaraPorqueElClienteYaFueAtendido] = 0;
+            cajaAVaciarPorqueElClienteYaFueAtendido = rdn.nextInt(cantidadDeCajasAbiertas);
+            if(caja[cajaAVaciarPorqueElClienteYaFueAtendido] != null) break;
+        }while(true);
+        tiempoActual += rdn.nextInt(300);
+        imprimirElTiempoActual();
+        System.out.println("El cliente con turno " + caja[cajaAVaciarPorqueElClienteYaFueAtendido] +
+                           " ha sido atendido y saldrá del banco. ");
+        caja[cajaAVaciarPorqueElClienteYaFueAtendido] = null;
     }
-
     /** Método lasCajasEstanVacias que devuelve un valor falso cuando alguna de
      * alguna de las cajas está ocupada y uno positivo cuando todas están vacías.**/
     private static boolean lasCajasEstanVacias() {
-        for(int i = 0; i<cantidadDeCajasAbiertas; i++) {
-            if (Integer.parseInt(caja[i] + "") != 0) return false;
+        for(int i = 0; i<caja.length; i++){
+            if(caja[i] != null) return false;
         }
-        return true;
+            return true;
     }
+    /** Método imprimirElTiempoActual que imprime el tiempo actual.
+     * No tiene valores de retorno ni recibe parámetros.**/
     private static void imprimirElTiempoActual(){
-        int horas = tiempoActual/3600;
-        if(horas<10) horas = Integer.parseInt(0 + "" + horas);
-        int minutos = (tiempoActual%3600)/60;
-        if(minutos<10){
-            minutos = Integer.parseInt(0 + "" + minutos);
-        }
-        int segundos = (tiempoActual%3600)%60;
-        if(segundos<10){
-            segundos = Integer.parseInt(0 + "" + segundos);
-        }
-        //Horas: minutos: segundos
+        String horas = tiempoActual/3600 + "";
+        if(horas.length()<2) horas = 0 + "" + horas;
+        String minutos = (tiempoActual%3600)/60 + "";
+        if(minutos.length()<2) minutos = 0 + "" + minutos;
+        String segundos = (tiempoActual%3600)%60 +"";
+        if(segundos.length()<2) segundos = 0 + "" + segundos;
         System.out.println("--------------- " + horas + ":" + minutos + ":" + segundos + " ---------------");
     }
 }
