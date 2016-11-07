@@ -4,7 +4,7 @@ import estructuras.QueueUnlimited;
 import java.util.Random;
 import java.util.Scanner;
 
-/** Created by xtrs84zk on 06/11/2016. **/
+/** Created on 06/11/2016. **/
 public class SimuladorDeBanco {
     /** Declaración de variables de clase **/
     private static Queue filaDelBanco;
@@ -146,30 +146,36 @@ public class SimuladorDeBanco {
     /** Método lasCajasEstanVacias que devuelve un valor falso cuando alguna de
      * alguna de las cajas está ocupada y uno positivo cuando todas están vacías.**/
     private static boolean lasCajasEstanVacias() {
-        for(int i = 0; i<caja.length; i++){
+        int i = 0;
+        while (i<caja.length) {
             if(caja[i] != null) return false;
+            i++;
         }
-            return true;
+        return true;
     }
     /** Método hayAlMenosUnaCajaLibre que verifica que haya al menos una caja libre.
      *  En caso de encontrar al menos una caja libre, regresa true.
      *  Al no encontrar cajas libres, regresará false.**/
     private static boolean hayAlMenosUnaCajaLibre(){
+        //No hay cajas libres a menos que se demuestre lo contrario.
         //Se verifica que haya cajas libres de una en una.
-        for(int i = 0; i<caja.length; i++){
-            if(caja[i] != null) return false;
+        int i = 0;
+        while (i<caja.length) {
+            //Al encontrar una caja libre, regresa true.
+            if(caja[i] == null) return true;
+            i++;
         }
-        return true;
+        return false;
     }
     /** Método imprimirElTiempoActual que imprime el tiempo actual.
      * No tiene valores de retorno ni recibe parámetros.**/
     private static void imprimirElTiempoActual(){
         String horas = tiempoActual/3600 + "";
-        if(horas.length()<2) horas = 0 + "" + horas;
+        if(horas.length()<2) horas = 0 + horas;
         String minutos = (tiempoActual%3600)/60 + "";
-        if(minutos.length()<2) minutos = 0 + "" + minutos;
+        if(minutos.length()<2) minutos = 0 + minutos;
         String segundos = (tiempoActual%3600)%60 +"";
-        if(segundos.length()<2) segundos = 0 + "" + segundos;
+        if(segundos.length()<2) segundos = 0 + segundos;
         System.out.println("--------------- " + horas + ":" + minutos + ":" + segundos + " ---------------");
     }
 }

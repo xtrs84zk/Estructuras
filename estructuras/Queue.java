@@ -1,6 +1,6 @@
 package estructuras;
 
-/** Created by xtrs84zk on 23/10/2016. **/
+/** Created on 23/10/2016. **/
 public interface Queue {
 
 	/** Indica si la cola está vacia. **/
