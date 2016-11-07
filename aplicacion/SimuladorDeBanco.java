@@ -29,7 +29,7 @@ public class SimuladorDeBanco {
         //Inicializando la fila del banco, el tiempo actual, las cajas que se abrirán y el turno.
         filaDelBanco  = new QueueUnlimited();
         tiempoActual= 0;
-        turno = 1;
+        turno = 0;
         caja = new Object[cantidadDeCajasAbiertas];
         //Pidiendo el día actual para ponderar la probabilidad de que lleguen
         //nuevos clientes o sean atendidos los que están en el banco.
@@ -100,7 +100,7 @@ public class SimuladorDeBanco {
     private static  void llegadaDeClienteAlBanco(){
         tiempoActual += rdn.nextInt(300);
         imprimirElTiempoActual();
-        System.out.println("Llega el cliente " + turno++ + " al banco.");
+        System.out.println("Llega el cliente " + ++turno + " al banco.");
         filaDelBanco.insert(turno);
     }
     /** Método elClienteLlegaALaCaja que se encarga de pasar clientes a la caja.
@@ -108,7 +108,7 @@ public class SimuladorDeBanco {
      * Define a qué caja pasará el cliente con base en las cajas abiertas
      * y a las cajas que estén vacías en dicho momento.**/
     private static void elClienteLlegaAlaCaja() throws Exception{
-        int cajaQueSeUsara = 0;
+        int cajaQueSeUsara = rdn.nextInt(cantidadDeCajasAbiertas);
         boolean hayCajasLibres = true;
         //Se verifica que haya cajas libres antes de intentar pasar clientes a alguna.
         for(int i = 0; i<caja.length; i++){
