@@ -42,7 +42,26 @@ public class SimuladorDeBanco {
         //llegar y ser atendidos.
         do{
             tiempoActual += (int) (Math.random() * 300);
-            decidirSiLlegaOSaleUnCliente(probabilidad, tiempoActual, tiempoLimite, filaDelBanco, ++turno, cantidadDeCajasAbiertas, caja);
+            if(tiempoActual<=tiempoLimite){
+                int auxiliar = (int) (Math.random() * 99)+1;
+                if(auxiliar<=probabilidad){
+                    llegadaDeClienteAlBanco(tiempoActual, filaDelBanco, turno);
+                } else {
+                    //Mientras haya al menos una caja libre, los clientes pasan a caja.
+                    while(hayAlMenosUnaCajaLibre(caja) && !filaDelBanco.isEmpty()){
+                        try {
+                            elClienteLlegaAlaCaja(cantidadDeCajasAbiertas, caja, filaDelBanco, tiempoActual);
+                        }catch(Exception ex){
+                            System.err.print("");
+                        }
+                    }
+                    try {
+                        atenderClientes(cantidadDeCajasAbiertas,tiempoActual, caja);
+                    }catch(Exception e) {
+                        //Es normal que esta excepción se produzca.
+                    }
+                }
+            }
         }while(tiempoActual<= tiempoLimite);
         //Si el tiempo ha sobrepasado el tiempo que el banco debe estar abierto,
         // se dejan de aceptar nuevos clientes y se comienza a vaciar la fila.
@@ -68,31 +87,7 @@ public class SimuladorDeBanco {
         System.out.println("Todos los clientes han sido atendidos.");
         System.out.println("El banco ha terminado sus actividades.");
     }
-    /** Método que decide si llegan nuevos clientes o son atendidos los que ya están ahí.
-     * Recibe la probabilidad de que un nuevo cliente llegue.
-     * @param probabilidad que es la probabilidad de que un cliente llegue.**/
-    private static void  decidirSiLlegaOSaleUnCliente(int probabilidad, int tiempoActual, int tiempoLimite, Queue filaDelBanco, int turno, int cantidadDeCajasAbiertas, Object[] caja){
-        if(tiempoActual<=tiempoLimite){
-            int auxiliar = (int) (Math.random() * 99)+1;
-            if(auxiliar<=probabilidad){
-                llegadaDeClienteAlBanco(tiempoActual, filaDelBanco, turno);
-            } else {
-                //Mientras haya al menos una caja libre, los clientes pasan a caja.
-                while(hayAlMenosUnaCajaLibre(caja) && !filaDelBanco.isEmpty()){
-                    try {
-                        elClienteLlegaAlaCaja(cantidadDeCajasAbiertas, caja, filaDelBanco, tiempoActual);
-                    }catch(Exception ex){
-                        System.err.print("");
-                    }
-                }
-                try {
-                    atenderClientes(cantidadDeCajasAbiertas,tiempoActual, caja);
-                }catch(Exception e) {
-                    //Es normal que esta excepción se produzca.
-                }
-            }
-        }
-    }
+
     /** Método llegadaDeClienteAlBanco que introduce un nuevo cliente a la fila del banco.
      * Muestra el tiempo en que dicho cliente llega y lo agrega a la fila.
      * Ademas incrementa el turno actual.**/
@@ -171,9 +166,5 @@ public class SimuladorDeBanco {
         String segundos = (tiempoActual%3600)%60 +"";
         if(segundos.length()<2) segundos = 0 + segundos;
         System.out.println("--------------- " + horas + ":" + minutos + ":" + segundos + " ---------------");
-    }
-
-    private static int turnoActual(int turnoActual){
-        return ++turnoActual;
     }
 }
