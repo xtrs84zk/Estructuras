@@ -42,7 +42,6 @@ public class SimuladorDeBanco {
         //llegar y ser atendidos.
         do{
             tiempoActual += (int) (Math.random() * 300);
-            if(tiempoActual<=tiempoLimite){
                 int auxiliar = (int) (Math.random() * 99)+1;
                 if(auxiliar<=probabilidad){
                     llegadaDeClienteAlBanco(tiempoActual, filaDelBanco, turno);
@@ -59,7 +58,6 @@ public class SimuladorDeBanco {
                         atenderClientes(cantidadDeCajasAbiertas,tiempoActual, caja);
                     }catch(Exception e) {
                         //Es normal que esta excepción se produzca.
-                    }
                 }
             }
         }while(tiempoActual<= tiempoLimite);
