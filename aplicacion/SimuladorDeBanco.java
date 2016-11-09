@@ -97,7 +97,11 @@ public class SimuladorDeBanco {
                     //Se intenta atender los clientes.
                     atenderClientes();
                 }catch(Exception e) {
-                    //Es normal que esta excepción se produzca, pues significa que no hay clientes en las cajas.
+                    try {
+                        elClienteLlegaAlaCaja();
+                    }catch(Exception exs){
+                        System.err.println("No hay clientes en la fila.");
+                    }
                 }
             }
             //Mientras haya al menos una caja libre, los clientes pasan a caja.
