@@ -52,7 +52,7 @@ public class SimuladorDeBanco {
         //Mientras el tiempo a abrir el banco no sea excedido, los clientes pueden
         //llegar y ser atendidos.
         do{
-            tiempoActual += rdn.nextInt(300);
+            tiempoActual += rdn.nextInt(60);
             decidirSiLlegaOSaleUnCliente(probabilidad);
         }while(tiempoActual<= tiempoLimite);
         //Si el tiempo ha sobrepasado el tiempo que el banco debe estar abierto,
@@ -98,9 +98,10 @@ public class SimuladorDeBanco {
                     atenderClientes();
                 }catch(Exception e) {
                     try {
+                        //Si no hay clientes por atender, se intenta pasar clientes a la caja.
                         elClienteLlegaAlaCaja();
                     }catch(Exception exs){
-                        System.err.println("No hay clientes en la fila.");
+                        System.err.print("");
                     }
                 }
             }
@@ -139,6 +140,7 @@ public class SimuladorDeBanco {
         } else { //En caso de no haber cajas libres, se lanza un mensaje de error.
             throw new Exception("No hay cajas libres.");
         }
+        if(filaDelBanco.isEmpty()) {throw new Exception("No hay clientes en la fila");}
         //Se imprime el momento en que el cliente llega a la caja.
             imprimirElTiempoActual();
         //Se imprime cuál cliente pasa a cuál caja.
