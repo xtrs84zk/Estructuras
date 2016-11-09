@@ -21,9 +21,10 @@ public class SimuladorDeBanco {
             tiempoLimite = s.nextInt();
         }while(tiempoLimite<0 || tiempoLimite>7);
         //Comienza el día a las nueve de la mañana.
-        tiempoActual= (9*3600);
+        tiempoActual= 32400;
         //Convirtiendo las horas elegidas a segundos y agregando nueve horas que es la hora a la que abre el banco.
-        tiempoLimite*=3600 + (9*3600);
+        tiempoLimite *= 3600;
+        tiempoLimite += 32400;
         //Pidiendo y asignando la cantidad de cajas que estarán abiertas
         System.out.print("¿Cuántas cajas estarán abiertas? ");
         cantidadDeCajasAbiertas = s.nextInt();
@@ -113,6 +114,7 @@ public class SimuladorDeBanco {
      * Muestra el tiempo en que dicho cliente llega y lo agrega a la fila.
      * Ademas incrementa el turno actual.**/
     private static  void llegadaDeClienteAlBanco(){
+        if(tiempoActual<tiempoLimite-300)
         tiempoActual += rdn.nextInt(300);
         imprimirElTiempoActual();
         System.out.println("Llega el cliente " + ++turno + " al banco.");
@@ -203,7 +205,7 @@ public class SimuladorDeBanco {
      * para el usuario final mas fácil.**/
     private static void imprimirElTiempoActual(){
         //Se divide entre 3600 tomando el cociente porque cada hora cuenta con 3600 segundos.
-        //Después se convierte a un String para una manupulación más fácil.
+        //Después se convierte a un String para una manipulación más fácil.
         String horas = tiempoActual/3600 + "";
         //En caso de que la longitud de horas sea menor a dos, se agrega un cero al inicio.
         if(horas.length()<2) horas = 0 + horas;
