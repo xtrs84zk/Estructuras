@@ -20,14 +20,15 @@ public class SimuladorDeBanco {
             System.out.print("¿Cuántas horas estará abierto el banco? ");
             tiempoLimite = s.nextInt();
         }while(tiempoLimite<0 || tiempoLimite>7);
-        //Convirtiendo las horas elegidas a segundos.
-        tiempoLimite*=3600;
+        //Comienza el día a las nueve de la mañana.
+        tiempoActual= (9*3600);
+        //Convirtiendo las horas elegidas a segundos y agregando nueve horas que es la hora a la que abre el banco.
+        tiempoLimite*=3600 + (9*3600);
         //Pidiendo y asignando la cantidad de cajas que estarán abiertas
         System.out.print("¿Cuántas cajas estarán abiertas? ");
         cantidadDeCajasAbiertas = s.nextInt();
-        //Inicializando la fila del banco, el tiempo actual, las cajas que se abrirán y el turno.
+        //Inicializando la fila del banco, las cajas que se abrirán y el turno.
         filaDelBanco  = new QueueUnlimited();
-        tiempoActual= 0;
         turno = 0;
         caja = new Object[cantidadDeCajasAbiertas];
         //Pidiendo el día actual para ponderar la probabilidad de que lleguen
@@ -36,11 +37,15 @@ public class SimuladorDeBanco {
             System.out.print("¿Qué día del mes es? ");
             dia = s.nextInt();
         }while(dia>31 || dia<1);
+        //Según si es quincena o no, la probabilidad de que llegue un nuevo cliente variará.
         if(dia == 15 || dia == 30){
+            //Si es quincena, la probabilidad oscilará entre 70% y 94%
             probabilidad = rdn.nextInt(25)+70;
         } else {
-            probabilidad = 60;
+            //Si no es quincena, varia entre 50% y 64%
+            probabilidad = rdn.nextInt(15) + 50;
         }
+        //Se imprime la hora a la que el banco abre sus puertas, así como un mensaje.
         imprimirElTiempoActual();
         System.out.println("El banco abre sus puertas.");
         //Mientras el tiempo a abrir el banco no sea excedido, los clientes pueden
@@ -53,9 +58,11 @@ public class SimuladorDeBanco {
         // se dejan de aceptar nuevos clientes y se comienza a vaciar la fila.
             try {
                 while (!filaDelBanco.isEmpty()) {
+                    //Mientras haya clientes en la fila, los pasa a caja hasta llenar las cajas.
                     elClienteLlegaAlaCaja();
                 }
             }catch(Exception e){
+                //La excepción será atrapada cuando las cajas estén llenas, en cuyo caso, se imprimira el tiempo actual.
                 imprimirElTiempoActual();
             }
             System.out.println("La fila del banco está vacía.");
