@@ -57,26 +57,22 @@ public class SimuladorDeBanco {
         }while(tiempoActual<= tiempoLimite);
         //Si el tiempo ha sobrepasado el tiempo que el banco debe estar abierto,
         // se dejan de aceptar nuevos clientes y se comienza a vaciar la fila.
-            try {
-                while (!filaDelBanco.isEmpty()) {
-                    //Mientras haya clientes en la fila, los pasa a caja hasta llenar las cajas.
+        do {
+            while (hayAlMenosUnaCajaLibre() && !filaDelBanco.isEmpty()) {
+                try {
                     elClienteLlegaAlaCaja();
+                } catch (Exception ex) {
+                    System.err.print("");
                 }
-            }catch(Exception e){
-                //La excepción será atrapada cuando las cajas estén llenas, en cuyo caso, se imprimira el tiempo actual.
-                imprimirElTiempoActual();
             }
-            System.out.println("La fila del banco está vacía.");
-
-        //Una vez que se ha vaciado la fila, se revisa que las cajas estén vacías
-        //y se atiende a los clientes remanentes.
-            while(!lasCajasEstanVacias()) {
+            while(!lasCajasEstanVacias()){
                 try {
                     atenderClientes();
-                }catch(Exception e){
-                    System.out.println(e.getMessage());
+                }catch(Exception es){
+                    //
                 }
             }
+        }while(!filaDelBanco.isEmpty() || !lasCajasEstanVacias());
         imprimirElTiempoActual();
         System.out.println("Todos los clientes han sido atendidos.");
         System.out.println("El banco ha terminado sus actividades.");
@@ -106,13 +102,13 @@ public class SimuladorDeBanco {
                 }
             }
             //Mientras haya al menos una caja libre, los clientes pasan a caja.
-            while(hayAlMenosUnaCajaLibre() && !filaDelBanco.isEmpty()){
-                try {
-                    elClienteLlegaAlaCaja();
-                }catch(Exception ex){
-                    System.err.print("");
+                if(hayAlMenosUnaCajaLibre()){
+                    try {
+                        elClienteLlegaAlaCaja();
+                    }catch(Exception t){
+                        //
+                    }
                 }
-            }
         }
     }
     /** Método llegadaDeClienteAlBanco que introduce un nuevo cliente a la fila del banco.
@@ -147,8 +143,6 @@ public class SimuladorDeBanco {
             System.out.println("El cliente " + filaDelBanco.front() + " pasa a la caja " + (cajaQueSeUsara+1));
             //Se pasa el cliente de la fila a la caja.
             caja[cajaQueSeUsara] = filaDelBanco.extract();
-            //Se intenta atender clientes.
-            atenderClientes();
     }
     /** Método atenderClientes que se encarga de atender los clientes en las cajas.
      * Define qué cliente atender con base en la cantidad de cajas ocupadas.
@@ -163,7 +157,7 @@ public class SimuladorDeBanco {
             cajaAVaciarPorqueElClienteYaFueAtendido = rdn.nextInt(cantidadDeCajasAbiertas);
             if(caja[cajaAVaciarPorqueElClienteYaFueAtendido] != null) break;
         }while(true);
-        //Al encontrar algún cliente, incrementa el tiempo actual entre 0 y 299 segundos para simular
+        //Al encontrar algún cliente, incrementa el tiempo actual entre 1 y 300 segundos para simular
         //que el cliente ha realizado una operación que le llevó cierto tiempo.
         tiempoActual += rdn.nextInt(300);
         //Se muestra el momento en que el cliente termina de ser atendido.
