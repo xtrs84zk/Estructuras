@@ -57,7 +57,10 @@ public class SimuladorDeBanco {
         }while(tiempoActual<= tiempoLimite);
         //Si el tiempo ha sobrepasado el tiempo que el banco debe estar abierto,
         // se dejan de aceptar nuevos clientes y se comienza a vaciar la fila.
+        //Los clientes que pasen a caja son atendidos de igual forma.
         do {
+            //Mientras haya al menos una caja libre y la fila del banco no esté vacía,
+            // se pasan clientes a caja.
             while (hayAlMenosUnaCajaLibre() && !filaDelBanco.isEmpty()) {
                 try {
                     elClienteLlegaAlaCaja();
@@ -65,14 +68,17 @@ public class SimuladorDeBanco {
                     System.err.print("");
                 }
             }
+            //Mientras las cajas no estén vacías, se atiende a los clientes.
             while(!lasCajasEstanVacias()){
                 try {
                     atenderClientes();
                 }catch(Exception es){
-                    //
+                    System.err.println("");
                 }
             }
+            //En cuanto se vacien las cajas y la fila, el banco puede cerrar sus actividades.
         }while(!filaDelBanco.isEmpty() || !lasCajasEstanVacias());
+        //Se imprime la hora en la que el último cliente sale del banco.
         imprimirElTiempoActual();
         System.out.println("Todos los clientes han sido atendidos.");
         System.out.println("El banco ha terminado sus actividades.");
