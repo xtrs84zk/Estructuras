@@ -3,6 +3,8 @@ import estructuras.Queue;
 import estructuras.QueueUnlimited;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
+
 /** Created on 06/11/2016. **/
 public class SimuladorDeBanco {
     /** Declaración de variables de clase **/
@@ -51,12 +53,14 @@ public class SimuladorDeBanco {
         System.out.println("El banco abre sus puertas.");
         //Mientras el tiempo a abrir el banco no sea excedido, los clientes pueden
         //llegar y ser atendidos.
-        do{
+        while(tiempoActual<= tiempoLimite){
             tiempoActual += rdn.nextInt(60);
             decidirSiLlegaOSaleUnCliente(probabilidad);
-        }while(tiempoActual<= tiempoLimite);
-        //Si el tiempo ha sobrepasado el tiempo que el banco debe estar abierto,
+        }
+        //Si se ha sobrepasado el tiempo que el banco debe estar abierto,
         // se dejan de aceptar nuevos clientes y se comienza a vaciar la fila.
+        imprimirElTiempoActual();
+        System.out.println("El banco ha dejado de aceptar clientes.");
         //Los clientes que pasen a caja son atendidos de igual forma.
         do {
             //Mientras haya al menos una caja libre y la fila del banco no esté vacía,
@@ -76,7 +80,7 @@ public class SimuladorDeBanco {
                     System.err.println("");
                 }
             }
-            //En cuanto se vacien las cajas y la fila, el banco puede cerrar sus actividades.
+            //En cuanto se vacíen las cajas y la fila, el banco puede cerrar sus actividades.
         }while(!filaDelBanco.isEmpty() || !lasCajasEstanVacias());
         //Se imprime la hora en la que el último cliente sale del banco.
         imprimirElTiempoActual();
@@ -87,7 +91,6 @@ public class SimuladorDeBanco {
      * Recibe la probabilidad de que un nuevo cliente llegue.**/
     private static void  decidirSiLlegaOSaleUnCliente(int probabilidad){
         if(tiempoActual<=tiempoLimite){
-            //
             int valorConElCualCompararLaProbabilidad = rdn.nextInt(99)+1;
             //En caso de que el valor con el cual comparar la probabilidad sea menor que ésta.
             if(valorConElCualCompararLaProbabilidad<=probabilidad){
@@ -107,14 +110,6 @@ public class SimuladorDeBanco {
                     }
                 }
             }
-            //Mientras haya al menos una caja libre, los clientes pasan a caja.
-                if(hayAlMenosUnaCajaLibre()){
-                    try {
-                        elClienteLlegaAlaCaja();
-                    }catch(Exception t){
-                        //
-                    }
-                }
         }
     }
     /** Método llegadaDeClienteAlBanco que introduce un nuevo cliente a la fila del banco.
@@ -126,6 +121,14 @@ public class SimuladorDeBanco {
         imprimirElTiempoActual();
         System.out.println("Llega el cliente " + ++turno + " al banco.");
         filaDelBanco.insert(turno);
+        //Una vez que el cliente ha llegado al banco, verifica que haya una caja libre y pasa a ella.
+        if (hayAlMenosUnaCajaLibre()) {
+            try {
+                elClienteLlegaAlaCaja();
+            } catch (Exception e) {
+                System.err.println("Se intentó pasar un cliente a caja, pero no había cajas libres.");
+            }
+        }
     }
     /** Método elClienteLlegaALaCaja que se encarga de pasar clientes a la caja.
      * En caso de que no haya clientes en la fila, lanza una excepcion.
@@ -210,6 +213,12 @@ public class SimuladorDeBanco {
      * 3757 en un ---------------01:02:37--------------- haciendo la comprensión
      * para el usuario final mas fácil.**/
     private static void imprimirElTiempoActual(){
+        //Se esperan unos segundos antes de mostrar el siguiente registro.
+        try {
+            TimeUnit.SECONDS.sleep(rdn.nextInt(4));
+        } catch(Exception r){
+            r.printStackTrace();
+        }
         //Se divide entre 3600 tomando el cociente porque cada hora cuenta con 3600 segundos.
         //Después se convierte a un String para una manipulación más fácil.
         String horas = tiempoActual/3600 + "";
@@ -223,7 +232,7 @@ public class SimuladorDeBanco {
         String segundos = (tiempoActual%3600)%60 +"";
         //En caso de que la longitud de minutos sea menor a dos, se agrega un cero al inicio.
         if(segundos.length()<2) segundos = 0 + segundos;
-        //Finalmente, se concatenan los datos en un mensaje y se muestra al ususario.
-        System.out.println("--------------- " + horas + ":" + minutos + ":" + segundos + " ---------------");
+        //Finalmente, se concatenan los datos en un mensaje y se muestra al usuario.
+        System.out.println("--------------------- " + horas + ":" + minutos + ":" + segundos + " ---------------------");
     }
 }
