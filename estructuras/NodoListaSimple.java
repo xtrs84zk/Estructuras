@@ -46,9 +46,7 @@ public class NodoListaSimple {
 
     /** Método toString que regresa un resumen del contenido del nodo.**/
     public String toString() {
-        return "NodoListaSimple{" +
-                "dato=" + dato +
-                ", siguiente=" + siguiente +
-                '}';
+        return  "Contenido: " + dato +
+                "\nSiguiente nodo: " + siguiente;
     }
 }
