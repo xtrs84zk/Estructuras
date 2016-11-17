@@ -55,6 +55,9 @@ public class ListaSimple {
         return temporal.getDato();
     }
 
+    /** Método insertarAlFinal que inserta un elemento al final de una lista ordenada.
+     *
+     * @param dato que es el dato a insertar en la lista.**/
     public void insertarAlFinal(Object dato){
         //Declarar una nueva referencia para, a partir del primer nodo, moverla
         // hasta el último nodo sin modificar el primero.
@@ -66,6 +69,34 @@ public class ListaSimple {
         ultimo.setSiguiente(nuevoNodo);
     }
 
+    /** Método eliminarElUltimo encargado de eliminar el último elemento en
+     * una lista ordenada. Lanza una excepción en caso de no encontrar elementos.
+     * Sin parámetros de entrada o salida.**/
+    public void eliminarElUltimo() throws Exception{
+        //Para eliminar el elemento al final de la lista, primeramente se verifica
+        // que haya elementos a eliminar.
+        if(!isEmpty()) {
+            //En caso de haber sólo un elemento en la lista, se elimina directamente.
+            if(primero.getSiguiente() == null){
+                primero = null;
+                return;
+            }
+            //Se crea un NodoListaSimple que contendrá la referencia al penúltimo.
+            NodoListaSimple penUltimo = primero;
+            //Se recorre la lista hasta encontrar el penúltimo nodo.
+            while (penUltimo.getSiguiente().getSiguiente() != null) {
+                penUltimo = penUltimo.getSiguiente();
+            }
+            //Se  la referencia en el penúltimo elemento.
+            penUltimo.setSiguiente(null);
+        } else {
+            //En caso de no haber elementos a eliminar, se lanza una excepción.
+            throw new Exception ("La lista esta vacia.");
+        }
+    }
+
+    /** Método isEmpty que verifica que la lista esté vacía.
+     * @return true en caso de que la lista no contenga elementos. **/
     public boolean isEmpty(){
         return primero == null;
     }
