@@ -82,16 +82,16 @@ public class ListaSimple {
                 return;
             }
             //Se crea un NodoListaSimple que contendrá la referencia al penúltimo elemento.
-            NodoListaSimple penUltimo = primero;
+            NodoListaSimple penultimo = primero;
             //Se recorre la lista hasta encontrar el penúltimo nodo.
-            while (penUltimo.getSiguiente().getSiguiente() != null) {
-                penUltimo = penUltimo.getSiguiente();
+            while (penultimo.getSiguiente().getSiguiente() != null) {
+                penultimo = penultimo.getSiguiente();
             }
             //Se elimina la referencia en el penúltimo elemento.
-            penUltimo.setSiguiente(null);
+            penultimo.setSiguiente(null);
         } else {
             //En caso de no haber elementos a eliminar, se lanza una excepción.
-            throw new Exception ("La lista esta vacía.");
+            throw new Exception("La lista está vacía.");
         }
     }
 
