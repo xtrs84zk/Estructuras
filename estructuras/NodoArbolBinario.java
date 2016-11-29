@@ -12,17 +12,6 @@ public class NodoArbolBinario {
         this.dato = dato;
     }
 
-    public NodoArbolBinario(NodoArbolBinario izquierdo, Object dato) {
-        this.dato = dato;
-        this.izquierdo = izquierdo;
-    }
-
-
-    public NodoArbolBinario(Object dato, NodoArbolBinario derecho) {
-        this.dato = dato;
-        this.derecho = derecho;
-    }
-
     public NodoArbolBinario(Object dato, NodoArbolBinario izquierdo, NodoArbolBinario derecho) {
         this.dato = dato;
         this.izquierdo = izquierdo;

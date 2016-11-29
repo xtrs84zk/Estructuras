@@ -63,23 +63,29 @@ public class ListaSimple {
         // hasta el último nodo sin modificar el primero.
         NodoListaSimple nuevoNodo = new NodoListaSimple(dato);
         NodoListaSimple ultimo = primero;
+        //Se busca el último nodo en la lista.
         while(ultimo.getSiguiente() != null){
             ultimo = ultimo.getSiguiente();
         }
+        //Una vez encontrado, se establece una referencia hacia el nuevo nodo.
         ultimo.setSiguiente(nuevoNodo);
     }
 
     /** Método eliminarElUltimo encargado de eliminar el último elemento en
      * una lista ordenada. Lanza una excepción en caso de no encontrar elementos.
-     * Sin parámetros de entrada o salida.**/
-    public void eliminarElUltimo() throws Exception{
+     * @return contenidoDelUltimoNodo que es el contenido del nodo eliminado.**/
+    public Object eliminarElUltimo() throws Exception {
+        //Variable donde se almacenará el contenido del elemento eliminado
+        Object contenidoDelUltimoNodo;
         //Para eliminar el elemento al final de la lista, primeramente se verifica
         // que haya elementos a eliminar.
         if(!isEmpty()) {
             //En caso de haber sólo un elemento en la lista, se elimina directamente.
             if(primero.getSiguiente() == null){
+                //En caso de que sólo haya un elemento en la lista, se almacena su contenido.
+                contenidoDelUltimoNodo = primero.getDato();
                 primero = null;
-                return;
+                return contenidoDelUltimoNodo;
             }
             //Se crea un NodoListaSimple que contendrá la referencia al penúltimo elemento.
             NodoListaSimple penultimo = primero;
@@ -87,17 +93,47 @@ public class ListaSimple {
             while (penultimo.getSiguiente().getSiguiente() != null) {
                 penultimo = penultimo.getSiguiente();
             }
+            //Se almacena el contenido del último nodo de la lista.
+            contenidoDelUltimoNodo = penultimo.getSiguiente().getDato();
             //Se elimina la referencia en el penúltimo elemento.
             penultimo.setSiguiente(null);
         } else {
-            //En caso de no haber elementos a eliminar, se lanza una excepción.
+            //En caso de no haber elementos a eliminar, se lanza una excepción
+            // indicando dicho estado.
             throw new Exception("La lista está vacía.");
         }
+        //Finalmente, se regresa el contenido del nodo eliminado.
+        return contenidoDelUltimoNodo;
     }
 
     /** Método isEmpty que verifica que la lista esté vacía.
      * @return true en caso de que la lista no contenga elementos. **/
     public boolean isEmpty(){
         return primero == null;
+    }
+
+    /**
+     * Metodo buscarUnElemento que localiza un elemento en la lista enlazada.
+     *
+     * @param elementoABuscar que es el elemento a buscar en la lista.
+     * @return true en caso de encontrar el elemento.
+     **/
+    public boolean buscarUnElemento(Object elementoABuscar) {
+        //Se crea un nodo temporal que contendrá la referencia al elemento
+        //que esté siendo comparado con el elemento a buscar.
+        NodoListaSimple temporal = primero;
+        //Mientras la referencia no sea nula (mientras haya elementos por comparar)
+        while (temporal != null) {
+            // Se verifica que el contenido de la referencia actual sea igual al
+            // elemento a comparar, en caso de serlo, se regresa true.
+            if (temporal.equals(elementoABuscar)) {
+                return true;
+            }
+            // Si los contenidos no son iguales, se mueve la referencia hacia el
+            // siguiente elemento en la lista.
+            temporal = temporal.getSiguiente();
+        }
+        //Se regresa false en caso de no haber encontrado el elemento.
+        return false;
     }
 }
