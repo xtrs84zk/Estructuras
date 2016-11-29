@@ -125,7 +125,7 @@ public class ListaSimple {
     }
 
     /**
-     * Metodo buscarUnElemento que localiza un elemento en la lista enlazada.
+     * Método buscarUnElemento que localiza un elemento en la lista enlazada.
      *
      * @param elementoABuscar que es el elemento a buscar en la lista.
      * @return true en caso de encontrar el elemento.
