@@ -64,6 +64,7 @@ public class ListaSimple {
         //Declarar una nueva referencia para, a partir del primer nodo, se mueva
         // hacia el último nodo sin modificar el primero.
         NodoListaSimple nuevoNodo = new NodoListaSimple(dato);
+        //Si la lista no está vacía
         if (!isEmpty()) {
             NodoListaSimple ultimo = primero;
             //Se busca el último nodo en la lista.
@@ -73,6 +74,7 @@ public class ListaSimple {
             //Una vez encontrado, se establece una referencia hacia el nuevo nodo.
             ultimo.setSiguiente(nuevoNodo);
         } else {
+            //En caso de que la lista esté vacía, se inserta como primer elemento.
             primero = nuevoNodo;
         }
     }
@@ -137,7 +139,7 @@ public class ListaSimple {
         //Mientras la referencia no sea nula (mientras haya elementos por comparar)
         while (temporal != null) {
             // Se verifica que el contenido de la referencia actual sea igual al
-            // elemento a comparar, en caso de serlo, se regresa true.
+            // elemento a comparar; en caso de serlo, se regresa true.
             if (temporal.getDato().equals(elementoABuscar)) {
                 return true;
             }
