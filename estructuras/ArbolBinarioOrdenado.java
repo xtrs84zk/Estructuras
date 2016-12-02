@@ -23,8 +23,9 @@ public class ArbolBinarioOrdenado {
         raiz = new NodoArbolBinario(dato, null, null);
     }
 
-    /** Método insertar que verifica qué procedimiento
-     * utilizar para insertar los datos en el árbol.
+    /** Método insertar que verifica que se pueda utilizar
+     * un procedimiento recursivo para insertar los datos
+     * en el árbol binario ordenado.
      * @param dato que es el dato a insertar.**/
     public void insertar(Object dato) {
         //Se crea un nuevo NodoArbolBinario que almacenará el dato a insertar.
@@ -34,6 +35,7 @@ public class ArbolBinarioOrdenado {
             raiz = temporal;
             //En caso de haber raíz, se busca un nodo en el que sí pueda insertarse.
         } else {
+            //Llamada al método recursivo que buscará donde insertar el nodo.
             insertarRecursivo(temporal, raiz);
         }
     }
