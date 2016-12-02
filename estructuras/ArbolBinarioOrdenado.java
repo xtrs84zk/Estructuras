@@ -10,7 +10,7 @@ public class ArbolBinarioOrdenado {
 
     /**
      * Constructor para la clase ArbolBinarioOrdenado
-     * que inicializa los valores en null.
+     * que inicializa los valores vacíos.
      **/
     public ArbolBinarioOrdenado() {
         raiz = null;
@@ -76,7 +76,7 @@ public class ArbolBinarioOrdenado {
     /** Metodo que verifica que el árbol pueda ser recorrido de
      * forma recursiva en modo preorden y después lo recorre.**/
     public void preOrden() {
-        //Si el arbol tiene datos, se puede recorrer.
+        //Si el árbol tiene datos, se puede recorrer.
         if (!isEmpty()) {
             preOrdenRecursivo(raiz);
         }
