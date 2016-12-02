@@ -27,15 +27,48 @@ public class ArbolBinarioOrdenado {
      * utilizar para insertar los datos en el árbol.
      * @param dato que es el dato a insertar.**/
     public void insertar(Object dato) {
+        //Se crea un nuevo NodoArbolBinario que almacenará el dato a insertar.
         NodoArbolBinario temporal = new NodoArbolBinario(dato, null, null);
-        insertarRecursivo(temporal, raiz);
+        //En caso de que no exista una raíz, el nuevo nodo será la raíz.
+        if (raiz == null) {
+            raiz = temporal;
+            //En caso de haber raíz, se busca un nodo en el que sí pueda insertarse.
+        } else {
+            insertarRecursivo(temporal, raiz);
+        }
     }
 
     /**
      * Método que inserta de forma recursiva elementos en un arreglo.
+     * @param raiz que es el nodo sobre el que se intentarán los datos
+     * @param nodoAInsertar que es el nodo con la nueva información a agregar en el árbol.
      **/
     private void insertarRecursivo(NodoArbolBinario nodoAInsertar, NodoArbolBinario raiz) {
+        //en caso de que el valor a insertar sea mayor que el contenido en la raíz.
+        if ((int) raiz.getDato() < (int) nodoAInsertar.getDato()) {
+            //si no hay valor a la derecha, se inserta ahí.
+            //Caso base
+            if (raiz.getDerecho() == null) {
+                raiz.setDerecho(nodoAInsertar);
+            } else {
+                //caso recursivo
+                //Se hace una llamada recursiva con un subárbol a la derecha.
+                insertarRecursivo(nodoAInsertar, raiz.getDerecho());
+            }
+        }
+        //En caso de que el valor a insertar sea menor que el contenido en la raíz.
+        else {
+            //Si no hay valor a la izquierda, se inserta ahí.
+            //Caso base.
+            if (raiz.getIzquierdo() == null) {
+                raiz.setIzquierdo(nodoAInsertar);
+            } else {
+                //Caso recursivo
+                //Se hace una llamada recursiva con un subárbol a la izquierda.
+                insertarRecursivo(nodoAInsertar, raiz.getIzquierdo());
+            }
 
+        }
     }
 
     /** Metodo que verifica que el árbol pueda ser recorrido de
@@ -53,6 +86,7 @@ public class ArbolBinarioOrdenado {
      * @param raiz que es el subárbol a procesar. **/
     private void preOrdenRecursivo(NodoArbolBinario raiz) {
         //Procesar la raíz.
+        System.out.println(raiz.getDato());
         //En caso de que el subárbol actual tenga una referencia
         //válida hacia el nodo izquierdo, se recorre dicho nodo.
         if (raiz.getIzquierdo() != null) {
@@ -82,7 +116,8 @@ public class ArbolBinarioOrdenado {
         if (raiz.getIzquierdo() != null) {
             inOrdenRecursivo(raiz.getIzquierdo());
         }
-        //procesar la raíz.
+        //Procesar la raíz.
+        System.out.println(raiz.getDato());
         //Se recorre el subárbol a la derecha si y sólo si existe.
         if (raiz.getDerecho() != null) {
             inOrdenRecursivo(raiz.getDerecho());
@@ -114,6 +149,7 @@ public class ArbolBinarioOrdenado {
             postOrdenRecursivo(raiz.getDerecho());
         }
         //Procesar la raíz.
+        System.out.println(raiz.getDato());
     }
 
     /** Método isEmpty que informa si el árbol está vacío.
