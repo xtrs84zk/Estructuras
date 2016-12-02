@@ -44,15 +44,19 @@ public class ListaSimple {
      *
      * @return temporal.getDato() que es lo que contenía el nodo eliminado.
      **/
-    public Object eliminarAlInicio() {
-        //Se crea un nuevo NodoListaSimple para almacenar el nodo a eliminar.
-        NodoListaSimple temporal;
-        //Se copia la referencia de primero hacía temporal.
-        temporal = primero;
-        //Se establece el primer nodo de la lista en el segundo.
-        primero = primero.getSiguiente();
-        //Se regresa el contenido del nodo eliminado.
-        return temporal.getDato();
+    public Object eliminarAlInicio() throws Exception {
+        if (isEmpty()) {
+            throw new Exception("La lista está vacía.");
+        } else {
+            //Se crea un nuevo NodoListaSimple para almacenar el nodo a eliminar.
+            NodoListaSimple temporal;
+            //Se copia la referencia de primero hacía temporal.
+            temporal = primero;
+            //Se establece el primer nodo de la lista en el segundo.
+            primero = primero.getSiguiente();
+            //Se regresa el contenido del nodo eliminado.
+            return temporal.getDato();
+        }
     }
 
     /**
@@ -149,5 +153,20 @@ public class ListaSimple {
         }
         //Se regresa false en caso de no haber encontrado el elemento.
         return false;
+    }
+
+    public String toString() {
+        if (isEmpty()) {
+            return "La lista está vacía, no hay elementos para mostrar.";
+        }
+        int nodoActualEnLaLista = 0;
+        String mensaje = "El contenido de la lista es: \n";
+        NodoListaSimple temporal = primero;
+        while (temporal.getSiguiente() != null) {
+            mensaje += ++nodoActualEnLaLista + ": " + temporal.getDato() + "\n";
+            temporal = temporal.getSiguiente();
+        }
+        mensaje += ++nodoActualEnLaLista + ": " + temporal.getDato() + "\n";
+        return mensaje;
     }
 }

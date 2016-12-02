@@ -54,6 +54,8 @@ public class ColaConLista implements Queue {
      * @param dato que es dato a insertar.
      **/
     public void insert(Object dato) {
+        //Se llama al método que inserta el
+        //dato a la lista.
         cola.insertarAlInicio(dato);
     }
 
