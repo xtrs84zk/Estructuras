@@ -155,18 +155,31 @@ public class ListaSimple {
         return false;
     }
 
+    /**
+     * Método toString que regresa el contenido de la lista.
+     *
+     * @return mensaje que es un listado de lo contenido en la lista.
+     **/
     public String toString() {
+        //En caso de estar vacía
         if (isEmpty()) {
             return "La lista está vacía, no hay elementos para mostrar.";
         }
+        //Se inicializa una variable para identificar cada nodo.
         int nodoActualEnLaLista = 0;
+        //Se inicializa una variable para almacenar el contenido de los nodos.
         String mensaje = "El contenido de la lista es: \n";
+        //Se inicializa un nodo para posicionarlo hasta llegar al ultimo.
         NodoListaSimple temporal = primero;
+        //Se recorre la lista agregando el contenido de cada nodo a mensaje
+        //junto con su número de nodo.
         while (temporal.getSiguiente() != null) {
             mensaje += ++nodoActualEnLaLista + ": " + temporal.getDato() + "\n";
             temporal = temporal.getSiguiente();
         }
+        //Se agrega el contenido del último nodo.
         mensaje += ++nodoActualEnLaLista + ": " + temporal.getDato() + "\n";
+        //Finalmente, se regresa el mensaje.
         return mensaje;
     }
 }

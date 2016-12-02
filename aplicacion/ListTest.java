@@ -9,7 +9,7 @@ import javax.swing.*;
  **/
 public class ListTest {
     public static void main(String[] args) {
-        //String
+        //String que contiene el mensaje con las opciones disponibles.
         final String opciones;
         opciones = "1. Crear lista.\n" +
                 "2. Insertar al inicio.\n" +
@@ -37,12 +37,15 @@ public class ListTest {
                     lista.insertarAlInicio(JOptionPane.showInputDialog(null, "Elemento a insertar:"));
                     break;
                 case 3:
+                    //Se pide el elemento a insertar y se inserta.
                     lista.insertarAlFinal(JOptionPane.showInputDialog(null, "Elemento a insertar:"));
                     break;
                 case 4:
+                    //Si la lista está vacía, se muestra un mensaje de error.
                     if (lista.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Imposible eliminar un elemento, la lista está vacía.");
                     } else {
+                        //Si hay elementos en la lista, se elimina el primero.
                         try {
                             JOptionPane.showMessageDialog(null, "Se eliminó el siguiente elemento: \n" + lista.eliminarAlInicio());
                         } catch (Exception e) {
@@ -51,9 +54,11 @@ public class ListTest {
                     }
                     break;
                 case 5:
+                    //Si la lista está vacía, se muestra un mensaje de error.
                     if (lista.isEmpty()) {
                         JOptionPane.showMessageDialog(null, "Imposible eliminar un elemento, la lista está vacía.");
                     } else {
+                        //Si hay elementos en la lista, se elimina el último.
                         try {
                             JOptionPane.showMessageDialog(null, "Se eliminó el siguiente elemento: \n" + lista.eliminarElUltimo());
                         } catch (Exception e) {
@@ -62,19 +67,25 @@ public class ListTest {
                     }
                     break;
                 case 6:
+                    //Se pide el elemento a buscar y se verifica que esté en la lista.
                     if (lista.buscarUnElemento(JOptionPane.showInputDialog(null, "¿Qué elemento desea buscar?"))) {
+                        //En caso de encontrarlo.
                         JOptionPane.showMessageDialog(null, "El elemento se encontró.");
                     } else {
+                        //En caso de no encontrarlo.
                         JOptionPane.showMessageDialog(null, "No se encontró el elemento.");
                     }
                     break;
                 case 7:
+                    //Se listan los elementos de... la lista.
                     JOptionPane.showMessageDialog(null, lista.toString());
                     break;
                 case 8:
+                    //Se muestra un mensaje antes de salir.
                     JOptionPane.showMessageDialog(null, "Saliendo.");
                     break;
                 default:
+                    //Cualquier otra opción es inválida.
                     JOptionPane.showMessageDialog(null, "Opción inválida.");
             }
         } while (opcion != 8);
