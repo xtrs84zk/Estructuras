@@ -1,7 +1,7 @@
 package estructuras;
 
 /**
- * Created by xtrs84zk on 23/11/2016.
+ * Created by Javier Sánchez on 23/11/2016.
  **/
 public class ArbolBinarioOrdenado {
     //Nodo de tipo árbol binario donde se encontrará la
@@ -27,27 +27,45 @@ public class ArbolBinarioOrdenado {
      * utilizar para insertar los datos en el árbol.
      * @param dato que es el dato a insertar.**/
     public void insertar(Object dato) {
+        NodoArbolBinario temporal = new NodoArbolBinario(dato, null, null);
+        insertarRecursivo(temporal, raiz);
+    }
+
+    /**
+     * Método que inserta de forma recursiva elementos en un arreglo.
+     **/
+    private void insertarRecursivo(NodoArbolBinario nodoAInsertar, NodoArbolBinario raiz) {
 
     }
 
-    private void insertarRecursivo(Object dato) {
-
-    }
-
+    /** Metodo que verifica que el árbol pueda ser recorrido de
+     * forma recursiva en modo preorden y después lo recorre.**/
     public void preOrden() {
+        //Si el arbol tiene datos, se puede recorrer.
         if (!isEmpty()) {
             preOrdenRecursivo(raiz);
         }
     }
 
+    /** Método que recorre el arbol de forma recursiva en preorden.
+     * Primero procesa la raíz, después recorre hacia la izquierda
+     * y finalmente, a la derecha.
+     * @param raiz que es el subárbol a procesar. **/
     private void preOrdenRecursivo(NodoArbolBinario raiz) {
-        if (!isEmpty()) {
-            //Procesar la raíz.
+        //Procesar la raíz.
+        //En caso de que el subárbol actual tenga una referencia
+        //válida hacia el nodo izquierdo, se recorre dicho nodo.
+        if (raiz.getIzquierdo() != null) {
             preOrdenRecursivo(raiz.getIzquierdo());
+        }
+        //Se recorre el subárbol a la derecha si y sólo si existe.
+        if (raiz.getDerecho() != null) {
             preOrdenRecursivo(raiz.getDerecho());
         }
     }
 
+    /** Método que verifica que sea posible recorrer el
+     * árbol en forma recursiva inorden y luego lo recorre.**/
     public void inOrden() {
         if (!isEmpty()) {
             inOrdenRecursivo(raiz);
@@ -86,8 +104,15 @@ public class ArbolBinarioOrdenado {
      * en realidad, sólo procesa un subárbol a la vez.
      * @param raiz que será la raíz del árbol a procesar.**/
     private void postOrdenRecursivo(NodoArbolBinario raiz) {
-        postOrdenRecursivo(raiz.getIzquierdo());
-        postOrdenRecursivo(raiz.getDerecho());
+        //En caso de que el subárbol actual tenga una referencia
+        //válida hacia el nodo izquierdo, se recorre dicho nodo.
+        if (raiz.getIzquierdo() != null) {
+            postOrdenRecursivo(raiz.getIzquierdo());
+        }
+        //Se recorre el subárbol a la derecha si y sólo si existe.
+        if (raiz.getDerecho() != null) {
+            postOrdenRecursivo(raiz.getDerecho());
+        }
         //Procesar la raíz.
     }
 

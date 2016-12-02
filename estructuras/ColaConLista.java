@@ -1,7 +1,7 @@
 package estructuras;
 
 /**
- * Created by xtrs84zk on 01/12/2016.
+ * Created by Javier Sanchez on 29/11/2016.
  **/
 public class ColaConLista implements Queue {
     //Lista simple que actuará como cola.
