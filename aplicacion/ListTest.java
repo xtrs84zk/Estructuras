@@ -2,7 +2,7 @@ package aplicacion;
 
 import estructuras.ListaSimple;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
 
 /**
  * Created by Javier Sánchez on 01/12/2016.
@@ -22,12 +22,14 @@ public class ListTest {
         //La lista se inicializa como una lista simple.
         ListaSimple lista = new ListaSimple();
         //Variable en que se almacenará la opción elegida por el usuario.
-        int opcion;
-        //Se muestra
+        int elegidoPorElUsuario;
+        //Se muestra un mensaje de inicio.
         JOptionPane.showMessageDialog(null, "Aplicación de prueba para la clase lista.");
         do {
-            opcion = Integer.parseInt(JOptionPane.showInputDialog(null, opciones));
-            switch (opcion) {
+            //Se muestra un mensaje con las opciones para que el usuario elija una.
+            elegidoPorElUsuario = Integer.parseInt(JOptionPane.showInputDialog(null, opciones));
+            //Se realiza una acción dependiendo de la elegidoPorElUsuario del usuario.
+            switch (elegidoPorElUsuario) {
                 case 1:
                     //Se crea una nueva lista reemplazando la anterior.
                     lista = new ListaSimple();
@@ -88,6 +90,6 @@ public class ListTest {
                     //Cualquier otra opción es inválida.
                     JOptionPane.showMessageDialog(null, "Opción inválida.");
             }
-        } while (opcion != 8);
+        } while (elegidoPorElUsuario != 8);
     }
 }
