@@ -2,6 +2,8 @@ package aplicacion;
 
 public class Automata {
     public static void Main(String[] args) {
+        String tokens[] = new String[100];
+        inicializarTokens(tokens);
 
     }
 
@@ -19,51 +21,81 @@ public class Automata {
         return posibleMiembroDelLenguaje;
     }
 
+    private static void inicializarTokens(String tokens[]) {
+        //Palabras reservadas
+        tokens[1] = "prog";
+        tokens[6] = "limpiar";
+        tokens[11] = "leer";
+        tokens[16] = "si";
+        tokens[2] = "var";
+        tokens[7] = "vexy";
+        tokens[12] = "escribir";
+        tokens[17] = "sino";
+        tokens[3] = "proc";
+        tokens[8] = "string";
+        tokens[13] = "repite";
+        tokens[18] = "ejecuta";
+        tokens[4] = "inicio";
+        tokens[9] = "real";
+        tokens[14] = "hasta";
+        tokens[19] = "and";
+        tokens[5] = "fin";
+        tokens[10] = "10";
+        tokens[15] = "mientras";
+        tokens[20] = "or";
 
-    private String validarIdentificador(String posibleIdentificador) {
-        String palabrasReservadas[] = {"prog", "entero", "leer", "si", "var", "real", "escribir", "sino", "proc", "string",
-                "repite", "ejecuta", "inicio", "limpiar", "hasta", "and", "fin", "vexy", "mientras", "or"};
-        char operadoresAritmeticos[] = {'+', '-', '*', '/'};
-        String operadoresRelacionales[] = {"<", "<=", "<>", ">", ">=", "="};
-        String operadoresLogicos[] = {"&&", "||", "!"};
-        String caracteresEspecialesQueGeneranToken[] = {";", "[", "]", ",", ":", "(", ")", ":="};
-        String caracteresEspecialesQueNoGeneranToken[] = {"\"", ".", "BCO", "TAB", "EOLN", "EOF"};
+        //Operadores aritméticos
+        tokens[31] = "+";
+        tokens[32] = "-";
+        tokens[33] = "*";
+        tokens[34] = "/";
 
-        //Si la cadena contiene una palabra reservada
-        int token = contiene(palabrasReservadas, posibleIdentificador);
-        if (token != -1) {
+        //Operadores relacionales
+        //String operadoresRelacionales[] = {"<", "<=", "<>", ">", ">=", "="};
+        //String operadoresLogicos[] = {"&&", "||", "!"};
+        //String caracteresEspecialesQueGeneranToken[] = {";", "[", "]", ",", ":", "(", ")", ":="};
+        //String caracteresEspecialesQueNoGeneranToken[] = {"\"", ".", "BCO", "TAB", "EOLN", "EOF"};
+    }
 
-            //Método bergas que hace algo bien chingón
+    private String analisisLexico(String posibleIdentificador, String[] tokens, int numeroDeLinea) {
+        int token = contiene(tokens, posibleIdentificador);
+        String analisisLexico = null;
+        //Si el token recibido es diferente a cien, se ha identificado la cadena en el lenguaje
+        if (token != 100) {
+            //Si la cadena contiene una palabra reservada
+            if (token > 0 && token < 20) {
+                analisisLexico = "(" + posibleIdentificador + ", -" + token + ", -1, " + numeroDeLinea + " )";
+            }
+            //Más o menos lo mismo para los demás
         }
-        return null;
+        return analisisLexico;
+    }
+
+    private String analizarIdentificador(String posibleIdentificador, int numeroDeLinea) {
+        //Los identificadores inician con una letra y pueden seguir con letras o hasta seis caracteres.
+        if (posibleIdentificador.length() > 6) {
+            return null;
+        }
+        String letras = "abcdefghijklmnñopqrstuvwxyz";
+        String analisisLexico = null;
+        //if(letras.contains(((char)posibleIdentificador.charAt(0))))
+        return analisisLexico;
     }
 
     /**
      * Recibe un arreglo y la cadena que buscará en él. En caso de encontrarlo, regresa
      * su posición en el arreglo; de lo contrario, regresa -100 como mensaje de error.
      *
-     * @param arregloQueLoDeberiaContener
+     * @param tokens
      * @param loQueDeberiaContener
      * @return
      */
-    private int contiene(String[] arregloQueLoDeberiaContener, String loQueDeberiaContener) {
-        for (int i = 0; i < arregloQueLoDeberiaContener.length - 1; i++) {
-            if (arregloQueLoDeberiaContener[i].equals(loQueDeberiaContener)) {
+    private int contiene(String[] tokens, String loQueDeberiaContener) {
+        for (int i = 0; i < 100; i++) {
+            if (tokens[i].equals(loQueDeberiaContener)) {
                 return i;
             }
         }
-        return -100;
+        return 100;
     }
-
-    private int tokenPalabrasReservadas(String[] palabrasReservadas, String palabra) {
-        if (palabra.equals("prog")) {
-            return -1;
-        } //if (palabra.equals()) {
-
-        //}
-        //Se ha determinado que -100 es el token de un error
-        return -100;
-    }
-
-    //Considerando meter cada palabra en un arreglo con la posición del token para fusionar los últimos dos métodos
 }
