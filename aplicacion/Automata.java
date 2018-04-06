@@ -9,7 +9,7 @@ public class Automata {
         String tokens[] = new String[100];
         inicializarTokens(tokens);
         ArrayList<String> codigoPorLineas;
-        ArrayList<String> analisisLexico;
+        ArrayList<String> analisisLexicoDeTodasLasLineas = new ArrayList<String>();
         try {
             codigoPorLineas = cargarCodigoDesdeUnArchivoDeTexto();
         } catch (IOException e) {
@@ -18,10 +18,24 @@ public class Automata {
             return;
         }
         System.out.println("El archivo de texto se ha cargado correctamente.");
-        System.out.println(codigoPorLineas.get(0));
-        //partir las líneas por espacios
-        //analizar con lo que se conoce ahora
-        //concatenar cada análisis a un archivo
+
+        //Analizar línea por línea
+        int i = 0;
+        try {
+            do {
+                analisisLexicoDeTodasLasLineas.addAll(identificarLexicoEnUnaLinea(codigoPorLineas.get(i), tokens, i));
+                i++;
+            } while (codigoPorLineas.get(i) != null);
+        } catch (Exception e) {
+            System.err.print("Límite de la lista alcanzado, no debería ocurrir, pero después reviso");
+        }
+        //concatenar el análisis a un archivo
+        try {
+            escribirElResultadoAUnArchivo(analisisLexicoDeTodasLasLineas);
+            System.out.println("El archivo se guardó satisfactoriamente.");
+        } catch (IOException e) {
+            System.out.println("El archivo no se pudo guardar, imprimiendo el resultado en pantalla.");
+        }
     }
 
     private static ArrayList cargarCodigoDesdeUnArchivoDeTexto() throws IOException {
@@ -33,8 +47,9 @@ public class Automata {
             codigoPorLineas = new ArrayList<String>();
             String r;
             BufferedReader in = new BufferedReader(input);
+            //el código será leído en minúsculas
             while ((r = in.readLine()) != null) {
-                codigoPorLineas.add(r + "\n");
+                codigoPorLineas.add(r.toLowerCase() + "\n");
             }
             in.close();
         }
@@ -48,6 +63,9 @@ public class Automata {
      * @param tokens referencia que fungirá para almacenar los token
      */
     private static void inicializarTokens(String tokens[]) {
+        for (int i = 0; i < tokens.length; i++) {
+            tokens[i] = "";
+        }
         //Palabras reservadas
         tokens[1] = "prog";
         tokens[6] = "limpiar";
@@ -104,47 +122,51 @@ public class Automata {
         //String caracteresEspecialesQueNoGeneranToken[] = {"\"", ".", "BCO", "TAB", "EOLN", "EOF"};
     }
 
-    private static void escribirElResultadoAUnArchivo(ArrayList<String> analisisLexico) throws IOException {
-        FileWriter writer = new FileWriter("C:/users/xtrs84zk/desktop/analisis.txt");
-        for (String str : analisisLexico) {
-            writer.write(str);
-        }
-        writer.close();
-    }
 
-    private ArrayList identificarLexicoEnUnaLinea(String lineaAIdentificar, String[] tokens, int numeroDeLinea) {
+    private static ArrayList identificarLexicoEnUnaLinea(String lineaAIdentificar, String[] tokens, int numeroDeLinea) {
         ArrayList<String> analisisDeLaLinea = new ArrayList<String>();
         //Estableciendo las expresiones
-        String analisisDeLaIteracionActual;
+        String analisisDeLaIteracionActual = null;
         String expresiones[] = lineaAIdentificar.split(Pattern.quote(" "));
         for (int i = 0; i < expresiones.length; i++) {
+            //Si alguna de las expresiones comienza por comillas, se procede a concatenar expresiones
+            //mientras la expresión completa sea incorrecta, una vez que es correcta, se procede a analizar
+            if (expresiones[i].charAt(0) == '\"') {
+                String posibleConstante = expresiones[i];
+                do {
+                    i++;
+                    //si la línea termina, la expresión se considera incorrecta.
+                    if (i > expresiones.length - 1) {
+                        analisisDeLaLinea.add(analisisLexico(posibleConstante, 100, 1, numeroDeLinea));
+                        return analisisDeLaLinea;
+                    }
+                    posibleConstante += expresiones[i];
+                } while (!constanteStringCorrectamenteFormulada(posibleConstante));
+                //Si el do finaliza satisfactoriamente, la expresión es considerada una constante correcta.
+                analisisDeLaLinea.add(analisisLexico(posibleConstante, 64, 1, numeroDeLinea));
+                continue;
+            }
             analisisDeLaIteracionActual = analisisLexicoDeElementosDelLenguaje(expresiones[i], tokens, numeroDeLinea);
-            if (analisisDeLaIteracionActual == null) {
+            if (analisisDeLaIteracionActual != null) {
+                analisisDeLaLinea.add(analisisDeLaIteracionActual);
+            } else {
                 analisisDeLaIteracionActual = analisisLexicoDeIdentificadores(expresiones[i], numeroDeLinea);
                 if (analisisDeLaIteracionActual == null) {
-
+                    analisisDeLaLinea.add(analisisLexico(expresiones[i], 100, 1, numeroDeLinea));
                 }
+                analisisDeLaLinea.add(analisisDeLaIteracionActual);
             }
-            analisisDeLaLinea.add(analisisDeLaIteracionActual + "\n");
         }
         return analisisDeLaLinea;
     }
 
-    private String analisisLexicoDeElementosDelLenguaje(String posibleIdentificador, String[] tokens, int numeroDeLinea) {
-        int token = contiene(tokens, posibleIdentificador);
+    private static String analisisLexicoDeElementosDelLenguaje(String posibleIdentificador, String[] tokens, int numeroDeLinea) {
+        int token = obtenerToken(tokens, posibleIdentificador);
+        return analisisLexico(posibleIdentificador, token, 1, numeroDeLinea);
+    }
 
-        //Si el token recibido es diferente a cien, se ha identificado la cadena en el lenguaje
-        if (token != 100) {
-            String analisisLexico = "";
-            //Si la cadena contiene una palabra reservada
-            if (token > 0 && token < 20) {
-                analisisLexico = "(" + posibleIdentificador + ", -" + token + ", -1, " + numeroDeLinea + " )";
-            }
-            //Más o menos lo mismo para los demás
-            return analisisLexico;
-        } else {
-            return null;
-        }
+    private static String analisisLexico(String elemento, int token, int tipoDeElemento, int numeroDeLinea) {
+        return "(" + elemento + ", -" + token + ", -" + tipoDeElemento + " ," + numeroDeLinea + " )" + "\n";
     }
 
     /**
@@ -155,22 +177,80 @@ public class Automata {
      * @param loQueDeberiaContener
      * @return
      */
-    private int contiene(String[] tokens, String loQueDeberiaContener) {
+    private static int obtenerToken(String[] tokens, String loQueDeberiaContener) {
         for (int i = 0; i < 100; i++) {
-            if (tokens[i].equals(loQueDeberiaContener)) {
-                return i;
+            if (tokens[i] != null) {
+                if (tokens[i].equals(loQueDeberiaContener)) {
+                    return i;
+                }
             }
         }
         return 100;
     }
 
-    private String analisisLexicoDeIdentificadores(String posibleIdentificador, int numeroDeLinea) {
+    private static String analisisLexicoDeIdentificadores(String posibleIdentificador, int numeroDeLinea) {
         //Los identificadores inician con una letra y pueden seguir con letras o hasta seis caracteres.
         if (0 <= "abcdefghijklmnñopqrstuvwxyz".indexOf(posibleIdentificador.charAt(0)) && posibleIdentificador.length() < 6) {
             return "(" + posibleIdentificador + ", -" + 61 + ", -2, " + numeroDeLinea + " )";
-        } else {
-            return null;
+        } else if (0 <= ".".indexOf(posibleIdentificador.charAt(0))) {
+            return "(" + posibleIdentificador + ", -" + 100 + ", -2, " + numeroDeLinea + " )";
+        } else if (0 <= "0123456789".indexOf(posibleIdentificador.charAt(0))) {
+            //El elemento comienza con un número, posible constante.
+            switch (tipoDeConstanteNumerica(posibleIdentificador)) {
+                case 2:
+                    return "(" + posibleIdentificador + ", -" + 100 + ", -2, " + numeroDeLinea + " )";
+                case 1:
+                    return "(" + posibleIdentificador + ", -" + 63 + ", -2, " + numeroDeLinea + " )";
+                case 0:
+                    return "(" + posibleIdentificador + ", -" + 62 + ", -2, " + numeroDeLinea + " )";
+            }
         }
+        return null;
+    }
 
+
+    private static boolean constanteStringCorrectamenteFormulada(String constante) {
+        if (constante.charAt(0) == '\"' && constante.charAt(constante.length() - 1) == '\"') {
+            String caracterEnLaIteracionActual = "";
+            int i = 0;
+            do {
+                //Si el caracter actual fue una comilla, no es el último caracter en la constante y antes de él
+                //no estaba un caracter de escape, la constante String está mal formada
+                if (constante.charAt(i) == '\"' && i < constante.length() - 1 && constante.charAt(i) == '\\') {
+                    return false;
+                }
+            } while (i < constante.length());
+            return true;
+        }
+        return false;
+    }
+
+    private static int tipoDeConstanteNumerica(String constante) {
+        int cantidadDePuntosEnLaConstante = 0;
+        for (int i = 0; i < constante.length(); i++) {
+            //Si la constante tiene más de un punto, se puede considerar un error
+            if (cantidadDePuntosEnLaConstante > 1) {
+                return 2;
+            }
+            if (0 > "0123456789".indexOf(constante.charAt(i))) {
+                if (constante.charAt(i) == '.') {
+                    cantidadDePuntosEnLaConstante++;
+                }
+            }
+        }
+        if (cantidadDePuntosEnLaConstante == 1) {
+            return 1;
+        } else if (cantidadDePuntosEnLaConstante == 0) {
+            return 0;
+        }
+        return 2;
+    }
+
+    private static void escribirElResultadoAUnArchivo(ArrayList<String> analisisLexico) throws IOException {
+        FileWriter writer = new FileWriter("C:/users/xtrs84zk/desktop/analisis.txt");
+        for (String str : analisisLexico) {
+            writer.write(str);
+        }
+        writer.close();
     }
 }
