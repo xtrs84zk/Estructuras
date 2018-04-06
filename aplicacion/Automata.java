@@ -159,7 +159,10 @@ public class Automata {
 
     private static String analisisLexicoDeElementosDelLenguaje(String posibleIdentificador, String[] tokens, int numeroDeLinea) {
         int token = obtenerToken(tokens, posibleIdentificador);
-        return analisisLexico(posibleIdentificador, token, 1, numeroDeLinea);
+        if (token != 100) {
+            return analisisLexico(posibleIdentificador, token, 1, numeroDeLinea);
+        }
+        return null;
     }
 
     private static String analisisLexico(String elemento, int token, int tipoDeElemento, int numeroDeLinea) {
@@ -188,13 +191,6 @@ public class Automata {
 
     private static String analisisLexicoDeIdentificadores(String posibleIdentificador, int numeroDeLinea) {
         //Los identificadores inician con una letra y pueden seguir con letras o hasta seis caracteres.
-        if (0 <= "abcdefghijklmnñopqrstuvwxyz".indexOf(posibleIdentificador.charAt(0)) && posibleIdentificador.length() < 6) {
-            return analisisLexico(posibleIdentificador, 61, 2, numeroDeLinea);
-            //return "(" + posibleIdentificador + ", -" + 61 + ", -2, " + numeroDeLinea + " )";
-        }
-        if (0 <= ".".indexOf(posibleIdentificador.charAt(0))) {
-            return "(" + posibleIdentificador + ", -" + 100 + ", -2, " + numeroDeLinea + " )";
-        }
         if (Character.isDigit(posibleIdentificador.charAt(0))) {
             //El elemento comienza con un número, posible constante.
             switch (tipoDeConstanteNumerica(posibleIdentificador)) {
@@ -206,6 +202,10 @@ public class Automata {
                     return analisisLexico(posibleIdentificador, 62, 2, numeroDeLinea);
             }
         }
+        if (0 <= "abcdefghijklmnñopqrstuvwxyz".indexOf(posibleIdentificador.charAt(0)) && posibleIdentificador.length() < 6) {
+            return analisisLexico(posibleIdentificador, 61, 2, numeroDeLinea);
+        }
+
         return null;
     }
 
