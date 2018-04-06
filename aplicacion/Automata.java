@@ -27,7 +27,7 @@ public class Automata {
                 i++;
             } while (codigoPorLineas.get(i) != null);
         } catch (Exception e) {
-            System.err.print("Límite de la lista alcanzado, no debería ocurrir, pero después reviso");
+            System.err.print("Límite de la lista alcanzado, no debería ocurrir, pero después reviso \n");
         }
         //concatenar el análisis a un archivo
         try {
@@ -63,9 +63,6 @@ public class Automata {
      * @param tokens referencia que fungirá para almacenar los token
      */
     private static void inicializarTokens(String tokens[]) {
-        for (int i = 0; i < tokens.length; i++) {
-            tokens[i] = "";
-        }
         //Palabras reservadas
         tokens[1] = "prog";
         tokens[6] = "limpiar";
@@ -140,7 +137,7 @@ public class Automata {
                         analisisDeLaLinea.add(analisisLexico(posibleConstante, 100, 1, numeroDeLinea));
                         return analisisDeLaLinea;
                     }
-                    posibleConstante += expresiones[i];
+                    posibleConstante += " " + expresiones[i];
                 } while (!constanteStringCorrectamenteFormulada(posibleConstante));
                 //Si el do finaliza satisfactoriamente, la expresión es considerada una constante correcta.
                 analisisDeLaLinea.add(analisisLexico(posibleConstante, 64, 1, numeroDeLinea));
@@ -166,7 +163,7 @@ public class Automata {
     }
 
     private static String analisisLexico(String elemento, int token, int tipoDeElemento, int numeroDeLinea) {
-        return "(" + elemento + ", -" + token + ", -" + tipoDeElemento + " ," + numeroDeLinea + " )" + "\n";
+        return "(" + elemento + ", -" + token + ", -" + tipoDeElemento + " ," + numeroDeLinea + " )" + "\r\n";
     }
 
     /**
@@ -178,6 +175,7 @@ public class Automata {
      * @return
      */
     private static int obtenerToken(String[] tokens, String loQueDeberiaContener) {
+        loQueDeberiaContener = loQueDeberiaContener.replaceAll("\n", "");
         for (int i = 0; i < 100; i++) {
             if (tokens[i] != null) {
                 if (tokens[i].equals(loQueDeberiaContener)) {
@@ -191,18 +189,21 @@ public class Automata {
     private static String analisisLexicoDeIdentificadores(String posibleIdentificador, int numeroDeLinea) {
         //Los identificadores inician con una letra y pueden seguir con letras o hasta seis caracteres.
         if (0 <= "abcdefghijklmnñopqrstuvwxyz".indexOf(posibleIdentificador.charAt(0)) && posibleIdentificador.length() < 6) {
-            return "(" + posibleIdentificador + ", -" + 61 + ", -2, " + numeroDeLinea + " )";
-        } else if (0 <= ".".indexOf(posibleIdentificador.charAt(0))) {
+            return analisisLexico(posibleIdentificador, 61, 2, numeroDeLinea);
+            //return "(" + posibleIdentificador + ", -" + 61 + ", -2, " + numeroDeLinea + " )";
+        }
+        if (0 <= ".".indexOf(posibleIdentificador.charAt(0))) {
             return "(" + posibleIdentificador + ", -" + 100 + ", -2, " + numeroDeLinea + " )";
-        } else if (0 <= "0123456789".indexOf(posibleIdentificador.charAt(0))) {
+        }
+        if (Character.isDigit(posibleIdentificador.charAt(0))) {
             //El elemento comienza con un número, posible constante.
             switch (tipoDeConstanteNumerica(posibleIdentificador)) {
                 case 2:
-                    return "(" + posibleIdentificador + ", -" + 100 + ", -2, " + numeroDeLinea + " )";
+                    return analisisLexico(posibleIdentificador, 100, 2, numeroDeLinea);
                 case 1:
-                    return "(" + posibleIdentificador + ", -" + 63 + ", -2, " + numeroDeLinea + " )";
+                    return analisisLexico(posibleIdentificador, 63, 2, numeroDeLinea);
                 case 0:
-                    return "(" + posibleIdentificador + ", -" + 62 + ", -2, " + numeroDeLinea + " )";
+                    return analisisLexico(posibleIdentificador, 62, 2, numeroDeLinea);
             }
         }
         return null;
@@ -232,9 +233,12 @@ public class Automata {
             if (cantidadDePuntosEnLaConstante > 1) {
                 return 2;
             }
-            if (0 > "0123456789".indexOf(constante.charAt(i))) {
+            if (!Character.isDigit(constante.charAt(i))) {
                 if (constante.charAt(i) == '.') {
                     cantidadDePuntosEnLaConstante++;
+                } else {
+                    //si comienza por un dígito pero contiene algo diferente a un dígito o punto, error
+                    return 2;
                 }
             }
         }
